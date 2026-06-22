@@ -1,0 +1,1993 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Thembisa Trading Hub – Training Guide</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:wght@700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --brown-900: #2C1A0E;
+    --brown-800: #4A2E1A;
+    --brown-700: #6B3F22;
+    --brown-600: #8B5030;
+    --brown-400: #C4845A;
+    --brown-200: #E8C9B0;
+    --brown-100: #F4E4D4;
+    --brown-50:  #FBF5EF;
+    --cream:     #FAF7F2;
+    --gold:      #C8A951;
+    --gold-light:#F0E4B0;
+    --white:     #FFFFFF;
+    --text-dark: #1A1108;
+    --text-mid:  #4A3728;
+    --text-muted:#7A6555;
+    --green-ok:  #2D6A4F;
+    --green-bg:  #D8F3DC;
+    --red-out:   #9B2226;
+    --red-bg:    #FFE0DE;
+    --blue-tip:  #1B4F8A;
+    --blue-bg:   #DBE9FA;
+    --sidebar-w: 260px;
+    --header-h:  64px;
+  }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--cream);
+    color: var(--text-dark);
+    display: flex;
+    min-height: 100vh;
+    font-size: 15px;
+    line-height: 1.7;
+  }
+
+  /* ── SIDEBAR ── */
+  #sidebar {
+    position: fixed;
+    top: 0; left: 0;
+    width: var(--sidebar-w);
+    height: 100vh;
+    background: var(--brown-900);
+    overflow-y: auto;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .sidebar-brand {
+    padding: 24px 20px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+
+  .brand-logo {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 6px;
+  }
+
+  .brand-icon {
+    width: 36px; height: 36px;
+    background: var(--gold);
+    border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 18px;
+  }
+
+  .brand-name {
+    font-family: 'Playfair Display', serif;
+    color: var(--white);
+    font-size: 16px;
+    line-height: 1.2;
+  }
+
+  .brand-sub {
+    font-size: 11px;
+    color: rgba(255,255,255,0.45);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .sidebar-label {
+    font-size: 10px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.35);
+    padding: 18px 20px 6px;
+    font-weight: 600;
+  }
+
+  .nav-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 9px 20px;
+    color: rgba(255,255,255,0.65);
+    text-decoration: none;
+    font-size: 13.5px;
+    font-weight: 400;
+    cursor: pointer;
+    transition: all 0.15s;
+    border-left: 3px solid transparent;
+  }
+
+  .nav-item:hover {
+    background: rgba(255,255,255,0.06);
+    color: var(--white);
+    border-left-color: var(--gold);
+  }
+
+  .nav-item.active {
+    background: rgba(200,169,81,0.15);
+    color: var(--gold);
+    border-left-color: var(--gold);
+    font-weight: 500;
+  }
+
+  .nav-num {
+    font-size: 11px;
+    color: rgba(255,255,255,0.25);
+    min-width: 18px;
+  }
+
+  /* ── MAIN CONTENT ── */
+  #main {
+    margin-left: var(--sidebar-w);
+    flex: 1;
+    min-height: 100vh;
+  }
+
+  /* ── TOP HEADER ── */
+  #topbar {
+    position: sticky;
+    top: 0;
+    background: rgba(250,247,242,0.95);
+    backdrop-filter: blur(8px);
+    border-bottom: 1px solid var(--brown-200);
+    height: var(--header-h);
+    display: flex;
+    align-items: center;
+    padding: 0 40px;
+    z-index: 50;
+    gap: 16px;
+  }
+
+  .topbar-section {
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--text-muted);
+    font-weight: 600;
+  }
+
+  .topbar-title {
+    font-size: 17px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .topbar-sep { color: var(--brown-400); font-size: 18px; }
+
+  .topbar-version {
+    margin-left: auto;
+    font-size: 12px;
+    color: var(--text-muted);
+    background: var(--brown-100);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-weight: 500;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    display: none;
+    padding: 48px 48px 80px;
+    max-width: 900px;
+  }
+
+  .section.active { display: block; }
+
+  /* ── HERO / COVER ── */
+  .hero {
+    background: var(--brown-900);
+    color: var(--white);
+    border-radius: 16px;
+    padding: 56px 48px;
+    margin-bottom: 40px;
+    position: relative;
+    overflow: hidden;
+  }
+
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -40px; right: -40px;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(200,169,81,0.15) 0%, transparent 70%);
+    border-radius: 50%;
+  }
+
+  .hero-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 12px;
+  }
+
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: 38px;
+    line-height: 1.15;
+    margin-bottom: 16px;
+    color: var(--white);
+  }
+
+  .hero-sub {
+    font-size: 16px;
+    color: rgba(255,255,255,0.65);
+    max-width: 520px;
+    line-height: 1.6;
+    margin-bottom: 32px;
+  }
+
+  .hero-tags {
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+  }
+
+  .hero-tag {
+    background: rgba(255,255,255,0.08);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: rgba(255,255,255,0.75);
+    font-size: 12px;
+    padding: 5px 14px;
+    border-radius: 20px;
+  }
+
+  /* ── MODULE CARDS (homepage) ── */
+  .module-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+    margin-top: 32px;
+  }
+
+  .module-card {
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    border-radius: 12px;
+    padding: 20px;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .module-card:hover {
+    border-color: var(--gold);
+    box-shadow: 0 4px 20px rgba(107,63,34,0.1);
+    transform: translateY(-2px);
+  }
+
+  .module-card-icon {
+    width: 40px; height: 40px;
+    border-radius: 10px;
+    background: var(--brown-100);
+    display: flex; align-items: center; justify-content: center;
+    font-size: 20px;
+    margin-bottom: 4px;
+  }
+
+  .module-card-num {
+    font-size: 11px;
+    color: var(--text-muted);
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  .module-card-title {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-dark);
+  }
+
+  .module-card-desc {
+    font-size: 13px;
+    color: var(--text-muted);
+    line-height: 1.5;
+  }
+
+  /* ── SECTION HEADER ── */
+  .section-header {
+    margin-bottom: 36px;
+  }
+
+  .section-eyebrow {
+    font-size: 11px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    font-weight: 600;
+    margin-bottom: 8px;
+  }
+
+  .section-header h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 28px;
+    color: var(--text-dark);
+    margin-bottom: 10px;
+  }
+
+  .section-header p {
+    color: var(--text-muted);
+    font-size: 15px;
+    max-width: 600px;
+  }
+
+  .section-divider {
+    height: 3px;
+    background: linear-gradient(90deg, var(--gold), transparent);
+    border-radius: 2px;
+    margin: 16px 0 28px;
+    width: 60px;
+  }
+
+  /* ── WHERE TO GO ── */
+  .where-to-go {
+    background: var(--brown-50);
+    border: 1px solid var(--brown-200);
+    border-left: 4px solid var(--gold);
+    border-radius: 0 10px 10px 0;
+    padding: 14px 18px;
+    margin-bottom: 28px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-mid);
+  }
+
+  .where-to-go span { font-size: 18px; }
+
+  .where-to-go strong { color: var(--brown-700); }
+
+  /* ── STEP BLOCKS ── */
+  .steps { margin: 20px 0; }
+
+  .step {
+    display: flex;
+    gap: 16px;
+    margin-bottom: 16px;
+    align-items: flex-start;
+  }
+
+  .step-num {
+    min-width: 28px; height: 28px;
+    background: var(--brown-900);
+    color: var(--gold);
+    border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 12px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .step-body { flex: 1; }
+
+  .step-title {
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+    margin-bottom: 3px;
+  }
+
+  .step-desc {
+    font-size: 13.5px;
+    color: var(--text-mid);
+    line-height: 1.6;
+  }
+
+  /* ── TIP BOXES ── */
+  .tip-box {
+    background: var(--blue-bg);
+    border: 1px solid #B8D4F5;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 13.5px;
+    color: var(--blue-tip);
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  .tip-box .tip-icon { font-size: 16px; flex-shrink: 0; margin-top: 2px; }
+
+  .warn-box {
+    background: #FFF8E1;
+    border: 1px solid #F0C040;
+    border-radius: 10px;
+    padding: 14px 18px;
+    margin: 20px 0;
+    font-size: 13.5px;
+    color: #7A5000;
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+  }
+
+  /* ── INFO TABLE ── */
+  .info-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 13.5px;
+    background: var(--white);
+    border-radius: 10px;
+    overflow: hidden;
+    border: 1px solid var(--brown-200);
+  }
+
+  .info-table th {
+    background: var(--brown-900);
+    color: var(--gold);
+    padding: 10px 16px;
+    text-align: left;
+    font-size: 12px;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 600;
+  }
+
+  .info-table td {
+    padding: 10px 16px;
+    border-bottom: 1px solid var(--brown-100);
+    color: var(--text-mid);
+    vertical-align: top;
+  }
+
+  .info-table tr:last-child td { border-bottom: none; }
+  .info-table tr:hover td { background: var(--brown-50); }
+
+  .info-table td:first-child {
+    font-weight: 600;
+    color: var(--text-dark);
+    white-space: nowrap;
+  }
+
+  /* ── STATUS BADGES ── */
+  .badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+  }
+
+  .badge-ok { background: var(--green-bg); color: var(--green-ok); }
+  .badge-out { background: var(--red-bg); color: var(--red-out); }
+  .badge-gold { background: var(--gold-light); color: #6B5000; }
+  .badge-blue { background: var(--blue-bg); color: var(--blue-tip); }
+  .badge-purple { background: #EDE9FE; color: #4C1D95; }
+
+  /* ── SUBHEADINGS ── */
+  .sub-h {
+    font-size: 16px;
+    font-weight: 700;
+    color: var(--text-dark);
+    margin: 32px 0 12px;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--brown-200);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .sub-h-icon { font-size: 18px; }
+
+  /* ── FIELD LIST ── */
+  .field-list { list-style: none; margin: 12px 0 20px; }
+  .field-list li {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+    padding: 8px 0;
+    border-bottom: 1px solid var(--brown-100);
+    font-size: 13.5px;
+  }
+  .field-list li:last-child { border-bottom: none; }
+  .field-name {
+    min-width: 180px;
+    font-weight: 600;
+    color: var(--text-dark);
+    font-size: 13px;
+  }
+  .field-desc { color: var(--text-mid); }
+  .req { color: var(--red-out); font-size: 11px; font-weight: 700; margin-left: 4px; }
+
+  /* ── WORKFLOW DAILY ── */
+  .workflow-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin: 20px 0;
+  }
+
+  .workflow-card {
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    border-radius: 12px;
+    padding: 20px;
+  }
+
+  .workflow-card-title {
+    font-weight: 700;
+    font-size: 13px;
+    color: var(--text-dark);
+    margin-bottom: 12px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .workflow-card ul { list-style: none; }
+  .workflow-card ul li {
+    font-size: 13px;
+    color: var(--text-mid);
+    padding: 4px 0;
+    display: flex;
+    gap: 8px;
+    align-items: flex-start;
+  }
+  .workflow-card ul li::before { content: '→'; color: var(--gold); font-weight: 700; flex-shrink: 0; }
+
+  /* ── TROUBLESHOOT ── */
+  .trouble-item {
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    border-radius: 10px;
+    margin-bottom: 12px;
+    overflow: hidden;
+  }
+  .trouble-q {
+    padding: 14px 18px;
+    font-weight: 600;
+    font-size: 14px;
+    color: var(--text-dark);
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background: var(--brown-50);
+  }
+  .trouble-q::before { content: '❓'; font-size: 15px; }
+  .trouble-a {
+    padding: 14px 18px;
+    font-size: 13.5px;
+    color: var(--text-mid);
+    border-top: 1px solid var(--brown-100);
+    line-height: 1.7;
+  }
+
+  /* ── NAV FOOTER ── */
+  .section-nav {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 52px;
+    padding-top: 24px;
+    border-top: 1px solid var(--brown-200);
+  }
+
+  .nav-btn {
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    color: var(--text-mid);
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .nav-btn:hover { border-color: var(--gold); color: var(--brown-700); }
+  .nav-btn.primary { background: var(--brown-900); border-color: var(--brown-900); color: var(--gold); }
+  .nav-btn.primary:hover { background: var(--brown-800); }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 768px) {
+    #sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+    #sidebar.open { transform: translateX(0); }
+    #main { margin-left: 0; }
+    .section { padding: 28px 20px 60px; }
+    .workflow-grid { grid-template-columns: 1fr; }
+    .hero { padding: 36px 24px; }
+    .hero h1 { font-size: 28px; }
+  }
+
+  /* ── SEARCH ── */
+  #search-bar {
+    padding: 12px 20px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
+  }
+  #search-input {
+    width: 100%;
+    background: rgba(255,255,255,0.06);
+    border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 6px;
+    padding: 7px 12px;
+    color: rgba(255,255,255,0.8);
+    font-size: 13px;
+    outline: none;
+    font-family: 'Inter', sans-serif;
+  }
+  #search-input::placeholder { color: rgba(255,255,255,0.3); }
+  #search-input:focus { border-color: var(--gold); }
+
+  .screen-mock {
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    border-radius: 12px;
+    overflow: hidden;
+    margin: 20px 0;
+    font-size: 13px;
+  }
+  .mock-titlebar {
+    background: var(--brown-900);
+    color: var(--gold);
+    padding: 8px 16px;
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  .mock-body { padding: 16px; }
+
+  .mock-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    background: var(--brown-700);
+    color: var(--white);
+    padding: 5px 12px;
+    border-radius: 6px;
+    font-size: 12px;
+    font-weight: 500;
+    margin: 3px;
+  }
+  .mock-btn.secondary {
+    background: transparent;
+    border: 1px solid var(--brown-300, #C49A7A);
+    color: var(--text-mid);
+  }
+  .mock-stat {
+    display: inline-block;
+    background: var(--brown-50);
+    border: 1px solid var(--brown-200);
+    border-radius: 8px;
+    padding: 10px 16px;
+    margin: 6px;
+    min-width: 120px;
+  }
+  .mock-stat-label { font-size: 10px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; }
+  .mock-stat-val { font-size: 20px; font-weight: 700; color: var(--text-dark); }
+</style>
+</head>
+<body>
+
+<!-- SIDEBAR -->
+<nav id="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-logo">
+      <div class="brand-icon">🍪</div>
+      <div>
+        <div class="brand-name">Thembisa Hub</div>
+        <div class="brand-sub">Training Guide · 2026</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="search-bar">
+    <input id="search-input" type="text" placeholder="Search sections…" oninput="filterNav(this.value)">
+  </div>
+
+  <div id="nav-list">
+    <div class="sidebar-label">Getting Started</div>
+    <a class="nav-item active" onclick="show('home')"><span class="nav-num">—</span> Overview & Welcome</a>
+    <a class="nav-item" onclick="show('nav')"><span class="nav-num">—</span> Navigation Guide</a>
+    <a class="nav-item" onclick="show('workflow')"><span class="nav-num">—</span> Daily Workflows</a>
+    <a class="nav-item" onclick="show('flowcharts')"><span class="nav-num">—</span> Process Flowcharts</a>
+
+    <div class="sidebar-label">Core Modules</div>
+    <a class="nav-item" onclick="show('dashboard')"><span class="nav-num">01</span> Dashboard</a>
+    <a class="nav-item" onclick="show('production')"><span class="nav-num">02</span> Production</a>
+    <a class="nav-item" onclick="show('pastprod')"><span class="nav-num">03</span> Past Production</a>
+    <a class="nav-item" onclick="show('stock')"><span class="nav-num">04</span> Stock on Floor</a>
+    <a class="nav-item" onclick="show('sales')"><span class="nav-num">05</span> Sales Orders</a>
+    <a class="nav-item" onclick="show('packing')"><span class="nav-num">06</span> Packing Queue</a>
+    <a class="nav-item" onclick="show('delivery')"><span class="nav-num">07</span> Delivery Schedule</a>
+    <a class="nav-item" onclick="show('supplier')"><span class="nav-num">08</span> Supplier Receipts</a>
+    <a class="nav-item" onclick="show('rawmat')"><span class="nav-num">09</span> Raw Materials</a>
+    <a class="nav-item" onclick="show('shoppos')"><span class="nav-num">10</span> Shop POS</a>
+
+    <div class="sidebar-label">Reports & Compliance</div>
+    <a class="nav-item" onclick="show('packing-report')"><span class="nav-num">11</span> Final Packing Report</a>
+    <a class="nav-item" onclick="show('traceability')"><span class="nav-num">12</span> Traceability</a>
+    <a class="nav-item" onclick="show('reports')"><span class="nav-num">13</span> Reports & Analytics</a>
+
+    <div class="sidebar-label">Admin & Data</div>
+    <a class="nav-item" onclick="show('imports')"><span class="nav-num">14</span> Data Imports</a>
+    <a class="nav-item" onclick="show('users')"><span class="nav-num">15</span> User Management</a>
+    <a class="nav-item" onclick="show('trouble')"><span class="nav-num">—</span> Troubleshooting</a>
+    <a class="nav-item" onclick="show('rules')"><span class="nav-num">—</span> Business Rules</a>
+  </div>
+</nav>
+
+<!-- MAIN -->
+<div id="main">
+  <div id="topbar">
+    <span class="topbar-section" id="tb-section">Overview</span>
+    <span class="topbar-sep">/</span>
+    <span class="topbar-title" id="tb-title">Welcome</span>
+    <span class="topbar-version">Version 1.0 · 2026</span>
+  </div>
+
+  <!-- ══════════════ HOME ══════════════ -->
+  <div id="sec-home" class="section active">
+    <div class="hero">
+      <div class="hero-eyebrow">Crunch 'n Munch Biscuit Co.</div>
+      <h1>Thembisa Trading Hub<br>Training Guide</h1>
+      <p class="hero-sub">Everything your team needs to operate the system confidently — from recording raw materials to generating HACCP compliance reports.</p>
+      <div class="hero-tags">
+        <span class="hero-tag">HACCP Compliant</span>
+        <span class="hero-tag">FIFO Stock Management</span>
+        <span class="hero-tag">End-to-End Traceability</span>
+        <span class="hero-tag">Pastel Integration</span>
+        <span class="hero-tag">Production Scheduling</span>
+      </div>
+    </div>
+
+    <div style="margin-bottom: 12px;">
+      <div style="font-size: 13px; color: var(--text-muted); margin-bottom: 6px;">Click any module below to jump straight to its guide.</div>
+    </div>
+
+    <div class="module-grid">
+      <div class="module-card" onclick="show('dashboard')">
+        <div class="module-card-icon">📊</div>
+        <div class="module-card-num">Module 01</div>
+        <div class="module-card-title">Dashboard</div>
+        <div class="module-card-desc">Your daily command centre. Stock levels, open orders, urgent deliveries & quick actions.</div>
+      </div>
+      <div class="module-card" onclick="show('production')">
+        <div class="module-card-icon">🏭</div>
+        <div class="module-card-num">Module 02</div>
+        <div class="module-card-title">Production</div>
+        <div class="module-card-desc">Start new baking batches, record ingredients & lots, generate schedules for bakers.</div>
+      </div>
+      <div class="module-card" onclick="show('stock')">
+        <div class="module-card-icon">📦</div>
+        <div class="module-card-num">Module 04</div>
+        <div class="module-card-title">Stock on Floor</div>
+        <div class="module-card-desc">Real-time view of packed and unpacked biscuit stock with expiry risk indicators.</div>
+      </div>
+      <div class="module-card" onclick="show('sales')">
+        <div class="module-card-icon">🛒</div>
+        <div class="module-card-num">Module 05</div>
+        <div class="module-card-title">Sales Orders</div>
+        <div class="module-card-desc">Import Pastel PDFs, create phone orders, manage all customer orders in one place.</div>
+      </div>
+      <div class="module-card" onclick="show('packing')">
+        <div class="module-card-icon">📋</div>
+        <div class="module-card-num">Module 06</div>
+        <div class="module-card-title">Packing Queue</div>
+        <div class="module-card-desc">Pack orders, allocate batches with FIFO, complete QA checks and upload HACCP docs.</div>
+      </div>
+      <div class="module-card" onclick="show('packing-report')">
+        <div class="module-card-icon">📄</div>
+        <div class="module-card-num">Module 11</div>
+        <div class="module-card-title">Final Packing Report</div>
+        <div class="module-card-desc">Official HACCP traceability document. Full journey of every order from raw material to delivery.</div>
+      </div>
+      <div class="module-card" onclick="show('supplier')">
+        <div class="module-card-icon">🚚</div>
+        <div class="module-card-num">Module 08</div>
+        <div class="module-card-title">Supplier Receipts</div>
+        <div class="module-card-desc">Record incoming raw materials, assign lot numbers, complete quality checklists.</div>
+      </div>
+      <div class="module-card" onclick="show('reports')">
+        <div class="module-card-icon">📈</div>
+        <div class="module-card-num">Module 13</div>
+        <div class="module-card-title">Reports & Analytics</div>
+        <div class="module-card-desc">Production, sales, expiry risk, demand forecasting and profitability analysis.</div>
+      </div>
+      <div class="module-card" onclick="show('flowcharts')">
+        <div class="module-card-icon">🔀</div>
+        <div class="module-card-num">Reference</div>
+        <div class="module-card-title">Process Flowcharts</div>
+        <div class="module-card-desc">Visual maps of the order lifecycle and the full factory process — from raw material receipt to customer delivery.</div>
+      </div>
+    </div>
+
+    <div class="section-nav">
+      <div></div>
+      <button class="nav-btn primary" onclick="show('nav')">Start: Navigation Guide →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ NAV GUIDE ══════════════ -->
+  <div id="sec-nav" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Getting Started</div>
+      <h2>Navigating the Hub</h2>
+      <div class="section-divider"></div>
+      <p>Every module is accessible from the left sidebar. Here's what each section does at a glance.</p>
+    </div>
+
+    <div class="where-to-go"><span>🌐</span> System URL: <strong>https://tembisa-hub.base44.app</strong> — bookmark this in your browser.</div>
+
+    <table class="info-table">
+      <thead><tr><th>Sidebar Item</th><th>What It's For</th><th>Who Uses It</th></tr></thead>
+      <tbody>
+        <tr><td>Dashboard</td><td>Overview of the day — open orders, stock, quick actions</td><td>Everyone</td></tr>
+        <tr><td>Production</td><td>Create new baking batches</td><td>Production Supervisor</td></tr>
+        <tr><td>Past Production</td><td>View, edit, and search completed batches. Generate production schedule PDF</td><td>Supervisor, Manager</td></tr>
+        <tr><td>Stock on Floor</td><td>Current finished goods and unpacked bulk stock levels</td><td>Everyone</td></tr>
+        <tr><td>Shop POS</td><td>Point of Sale for the factory shop (walk-in customers)</td><td>Shop staff</td></tr>
+        <tr><td>Sales Orders</td><td>All customer orders — create manually or import from Pastel</td><td>Sales, Manager</td></tr>
+        <tr><td>Packing Queue</td><td>Orders ready to be packed — allocate batches and complete QA</td><td>Packing Supervisor</td></tr>
+        <tr><td>Delivery Schedule</td><td>Orders packed and ready for dispatch to customers</td><td>Drivers, Manager</td></tr>
+        <tr><td>Past Orders</td><td>Completed and delivered sales orders for reference</td><td>Manager, Sales</td></tr>
+        <tr><td>Supplier Orders</td><td>Purchase orders placed with raw material suppliers</td><td>Manager</td></tr>
+        <tr><td>Supplier Receipts</td><td>Record incoming raw materials and assign lot numbers</td><td>Receiving staff</td></tr>
+        <tr><td>Raw Materials</td><td>Manage ingredient stock levels and details</td><td>Manager</td></tr>
+        <tr><td>Traceability</td><td>Track any batch from raw material through to customer delivery</td><td>Manager, QA</td></tr>
+        <tr><td>Final Packing Report</td><td>Official HACCP / traceability document for audits and compliance</td><td>QA, Manager</td></tr>
+        <tr><td>Reports</td><td>All business analytics — production, sales, expiry risk, profitability</td><td>Manager</td></tr>
+        <tr><td>Data Imports</td><td>Upload stock takes, import customers from Pastel CSV</td><td>Manager, Admin</td></tr>
+        <tr><td>User Management</td><td>Add and edit staff accounts and access levels (Admin only)</td><td>Admin</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The sidebar can be collapsed on smaller screens. If you can't see a menu item, look for the menu icon (☰) at the top left of the screen.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('home')">← Back</button>
+      <button class="nav-btn primary" onclick="show('workflow')">Daily Workflows →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DAILY WORKFLOW ══════════════ -->
+  <div id="sec-workflow" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Getting Started</div>
+      <h2>Daily Workflows</h2>
+      <div class="section-divider"></div>
+      <p>Follow these checklists every day to keep production, packing, and compliance running smoothly.</p>
+    </div>
+
+    <div class="workflow-grid">
+      <div class="workflow-card">
+        <div class="workflow-card-title">🌅 Morning — All Staff</div>
+        <ul>
+          <li>Open Dashboard</li>
+          <li>Check Low Raw Materials alert</li>
+          <li>Check Open Orders count</li>
+          <li>Check Due in 48hrs alert</li>
+          <li>Download Production Schedule PDF</li>
+          <li>Start new production batches if needed</li>
+        </ul>
+      </div>
+      <div class="workflow-card">
+        <div class="workflow-card-title">☀️ During the Day</div>
+        <ul>
+          <li>Import Pastel PDF (Sales Orders)</li>
+          <li>Review incoming Supplier Receipts</li>
+          <li>Open Packing Queue — pack all Ready orders</li>
+          <li>Monitor Stock on Floor levels</li>
+          <li>Record any new production batches</li>
+          <li>Check Shop POS for walk-in sales</li>
+        </ul>
+      </div>
+      <div class="workflow-card">
+        <div class="workflow-card-title">🌙 End of Day</div>
+        <ul>
+          <li>Pack any remaining orders</li>
+          <li>Upload HACCP documents on Dashboard (one upload covers all today's orders)</li>
+          <li>Generate Final Packing Report</li>
+          <li>Check Delivery Schedule for tomorrow</li>
+          <li>Quick stock count if needed</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="sub-h">🔑 Key Rules to Remember</div>
+    <table class="info-table">
+      <thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>FIFO always</td><td>Stock is always packed oldest-batch-first. The system enforces this automatically.</td></tr>
+        <tr><td>Assorted / Mix</td><td>Never bake separately. The system distributes KG across 5 flavours: Shortbread, Ginger, Choc Chip, Coconut, Crunchie.</td></tr>
+        <tr><td>Batch numbers</td><td>Format is <strong>ddmmyy-shift</strong> (e.g. 220626-01 for Day shift on 22 June 2026). Auto-generated.</td></tr>
+        <tr><td>HACCP upload</td><td>Done once per day from the Dashboard — links automatically to all packed orders for that day.</td></tr>
+        <tr><td>Lot numbers</td><td>Always enter supplier lot numbers when receiving stock. If unknown, select "Fill in later" — a reminder will appear on the Dashboard.</td></tr>
+        <tr><td>Retail vs Shop</td><td>Retail orders are delivered to customers. Shop orders are always collection-only — never add to a delivery route.</td></tr>
+        <tr><td>Save confirmation</td><td>The system always asks "Are you sure?" before saving. Always check before confirming.</td></tr>
+        <tr><td>White Bread Flour</td><td>Zero-rated — no VAT applies when recording supplier receipts for this ingredient.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('nav')">← Navigation Guide</button>
+      <button class="nav-btn primary" onclick="show('dashboard')">Module 01: Dashboard →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DASHBOARD ══════════════ -->
+  <div id="sec-dashboard" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 01</div>
+      <h2>Dashboard</h2>
+      <div class="section-divider"></div>
+      <p>The Dashboard is your daily command centre — the first screen you see when you log in. It gives you an instant picture of what's happening across the operation.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Dashboard</strong> (top of the list)</div>
+
+    <div class="screen-mock">
+      <div class="mock-titlebar">📊 Dashboard — Quick Action Buttons (top right of screen)</div>
+      <div class="mock-body" style="display:flex; gap:6px; flex-wrap:wrap; padding: 12px 16px;">
+        <div class="mock-btn">↓ Packing Schedule</div>
+        <div class="mock-btn">↓ Production Schedule</div>
+        <div class="mock-btn" style="background:var(--green-ok);">+ New Production</div>
+        <div class="mock-btn" style="background:var(--blue-tip);">New Order</div>
+      </div>
+    </div>
+
+    <div class="sub-h">📊 Dashboard Cards Explained</div>
+    <table class="info-table">
+      <thead><tr><th>Card / Section</th><th>What it Shows</th><th>What to Do</th></tr></thead>
+      <tbody>
+        <tr><td>Total Batches Produced</td><td>Number of baking batches completed all-time</td><td>Reference only</td></tr>
+        <tr><td>This Month kg Sold</td><td>Total kilograms sold this calendar month</td><td>Monitor vs targets</td></tr>
+        <tr><td>Open Orders</td><td>Orders pending fulfilment (not yet packed)</td><td>Should be 0 by end of day</td></tr>
+        <tr><td>Due in 48hrs <span class="badge badge-out">URGENT</span></td><td>Orders with delivery dates within 2 days</td><td>Act immediately — prioritise packing</td></tr>
+        <tr><td>Supplier Receipt – Batch # Pending</td><td>Supplier receipts where a lot number hasn't been filled in yet</td><td>Click to open and complete the batch number</td></tr>
+        <tr><td>HACCP Document Upload</td><td>End-of-day upload slot for your scanned HACCP food safety forms</td><td>Upload once at end of day — links to ALL packed orders for that day</td></tr>
+        <tr><td>Stock on Floor</td><td>Current finished product stock levels with <span class="badge badge-ok">OK</span> / <span class="badge badge-out">OUT</span> status</td><td>Check Assorted first — it often runs out</td></tr>
+        <tr><td>Low Raw Materials</td><td>Ingredients below their minimum required level</td><td>Place a Supplier Order before the next big production run</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">⚡ Quick Actions Panel</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">The Quick Actions panel (bottom right of the Dashboard) gives you one-click shortcuts to the most-used functions:</p>
+    <ul class="field-list">
+      <li><span class="field-name">Final Packing Report</span><span class="field-desc">Generate the end-of-day HACCP traceability report</span></li>
+      <li><span class="field-name">Packing Queue</span><span class="field-desc">Jump straight to orders that need to be packed now</span></li>
+      <li><span class="field-name">Traceability</span><span class="field-desc">Search by batch number — use for recalls or customer complaints</span></li>
+      <li><span class="field-name">Past Production</span><span class="field-desc">Review or edit previous baking batches</span></li>
+    </ul>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The Dashboard refreshes automatically. If numbers look out of date, press F5 (or Ctrl+R on Windows, Cmd+R on Mac) to manually refresh the page.</div></div>
+
+    <div class="warn-box"><span>⚠️</span><div><strong>Daily must-do:</strong> The HACCP Document Upload must be completed every single day. Missing this means packed orders will not have their food safety documentation linked — which is a compliance failure.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('workflow')">← Daily Workflows</button>
+      <button class="nav-btn primary" onclick="show('production')">Module 02: Production →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ PRODUCTION ══════════════ -->
+  <div id="sec-production" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 02</div>
+      <h2>Production</h2>
+      <div class="section-divider"></div>
+      <p>Create new baking batches. Each batch uses raw materials from stock and adds finished biscuits to Stock on Floor.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Production</strong> — or click <strong>+ New Production</strong> on the Dashboard</div>
+
+    <div class="sub-h">🆕 Starting a New Production Batch</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "+ New Production" or go to Production in the sidebar</div><div class="step-desc">You can start from the Dashboard quick-action button (green) or via the left sidebar menu.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select the Product (Flavour)</div><div class="step-desc">Choose from the dropdown: Choc Crunch, Coconut, Crunchie, Choc Chip, Ginger, Shortbread, etc. Do <em>not</em> create a separate batch for Assorted/Mix — the system handles flavour distribution automatically.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter Batches Produced</div><div class="step-desc">The number of individual batches baked (e.g. 5, 10, 20). Each batch is a fixed recipe quantity.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Set Production Date</div><div class="step-desc">Defaults to today. Change only if you're entering a batch that was baked on a previous day.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Check Expiry Date</div><div class="step-desc">The system auto-fills this based on product type. Verify it is correct before saving.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Select Shift</div><div class="step-desc"><strong>01 Day</strong> or <strong>02 Night</strong>. Choose whichever shift baked this batch.</div></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Select Production Supervisor</div><div class="step-desc">Choose the supervisor who oversaw this baking run. This is required for HACCP traceability.</div></div></div>
+      <div class="step"><div class="step-num">8</div><div class="step-body"><div class="step-title">Note the Baking Batch Number (auto-generated)</div><div class="step-desc">The system generates this automatically in the format <strong>ddmmyy-shift-sequence</strong>. You do not need to type it — but note it for reference.</div></div></div>
+      <div class="step"><div class="step-num">9</div><div class="step-body"><div class="step-title">Add QA Notes (optional)</div><div class="step-desc">Record any quality observations, deviations, or issues with this batch. These appear in the Final Packing Report.</div></div></div>
+      <div class="step"><div class="step-num">10</div><div class="step-body"><div class="step-title">Select Ingredients & Lots Used</div><div class="step-desc">The system pulls in the required ingredients for the selected product automatically. <strong>You must select the correct lot numbers</strong> for each ingredient — this is critical for traceability. Always use the oldest lot first (FIFO).</div></div></div>
+      <div class="step"><div class="step-num">11</div><div class="step-body"><div class="step-title">Click "Save Production Batch"</div><div class="step-desc">The system will ask "Are you sure?" — confirm to save. The finished product stock immediately updates on Stock on Floor.</div></div></div>
+    </div>
+
+    <div class="sub-h">📅 Generating a Production Schedule PDF</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">The Production Schedule is a professional colour-coded PDF printed and given to bakers each shift.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Go to Past Production or the Sales Orders screen</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Click the green "Schedule PDF" button (top right)</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Select which orders / products to include</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Download and print the PDF for bakers</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Always select accurate lot numbers — if you choose the wrong lot, the traceability chain breaks. The system will show which lots are available for the selected ingredient.</div></div>
+    <div class="tip-box"><span class="tip-icon">💡</span><div>After saving, the finished stock will appear automatically in Stock on Floor. You don't need to enter it separately.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('dashboard')">← Dashboard</button>
+      <button class="nav-btn primary" onclick="show('pastprod')">Module 03: Past Production →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ PAST PRODUCTION ══════════════ -->
+  <div id="sec-pastprod" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 03</div>
+      <h2>Past Production</h2>
+      <div class="section-divider"></div>
+      <p>View, search, and edit all completed baking batches. Also where you generate the Production Schedule PDF.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Past Production</strong></div>
+
+    <div class="sub-h">🔍 Searching Batches</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Use the search bar at the top to find any batch by:</p>
+    <ul class="field-list">
+      <li><span class="field-name">Batch Number</span><span class="field-desc">e.g. CC220626-01 — the auto-generated baking batch number</span></li>
+      <li><span class="field-name">Product / Flavour</span><span class="field-desc">e.g. "Choc Crunch" or "Ginger"</span></li>
+      <li><span class="field-name">Date</span><span class="field-desc">e.g. 22/06/2026 — find all batches from a specific day</span></li>
+    </ul>
+
+    <div class="sub-h">✏️ Editing a Production Run</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">If a batch didn't produce as much as planned, you must edit it and add a note.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Find the batch using the search bar</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Click "Edit" on the right side of the batch row</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Update the Batches Produced quantity</div><div class="step-desc">Change it to the actual number of batches completed, not the planned number.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Add a note explaining the shortfall</div><div class="step-desc">e.g. "Oven breakdown — 3 batches lost". This is important for performance tracking and management reporting.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Save</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Always edit incomplete batches and add clear notes. This data feeds the Reports & Analytics module and helps management identify recurring issues.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('production')">← Production</button>
+      <button class="nav-btn primary" onclick="show('stock')">Module 04: Stock on Floor →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ STOCK ON FLOOR ══════════════ -->
+  <div id="sec-stock" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 04</div>
+      <h2>Stock on Floor</h2>
+      <div class="section-divider"></div>
+      <p>A real-time view of all finished goods currently on the production floor — both packed and unpacked.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Stock on Floor</strong></div>
+
+    <div class="sub-h">📦 Understanding the Stock Display</div>
+    <table class="info-table">
+      <thead><tr><th>Display Element</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td><span class="badge badge-ok">OK</span></td><td>Stock level is healthy — enough to fill pending orders</td></tr>
+        <tr><td><span class="badge badge-out">OUT</span></td><td>Product is out of stock — production needed urgently</td></tr>
+        <tr><td>Expiry ≤15 days</td><td>Shown with an orange/red indicator — prioritise packing and dispatch</td></tr>
+        <tr><td>Expiry ≤30 days</td><td>Yellow indicator — monitor closely and plan accordingly</td></tr>
+        <tr><td>By Product totals</td><td>Shows packed + unpacked kg combined per flavour</td></tr>
+        <tr><td>Unpacked Bulk Biscuits section</td><td>Listed at the bottom — biscuits awaiting packing, shown in kg per flavour</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">🔢 How Stock is Sorted</div>
+    <p style="color:var(--text-mid); font-size:14px;">Stock is always displayed in FIFO order — oldest batches shown first. This ensures the packing team always uses the earliest stock to minimise expiry waste.</p>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div><strong>Assorted / Mix</strong> frequently goes out of stock first. Make it a habit to check this line every morning before deciding on production runs for the day.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('pastprod')">← Past Production</button>
+      <button class="nav-btn primary" onclick="show('sales')">Module 05: Sales Orders →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SALES ORDERS ══════════════ -->
+  <div id="sec-sales" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 05</div>
+      <h2>Sales Orders</h2>
+      <div class="section-divider"></div>
+      <p>All customer orders live here. You can import from Pastel automatically, create phone orders manually, or enter new sales orders directly.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Sales Orders</strong></div>
+
+    <div class="sub-h">⭐ Method 1: Import Pastel PDF (Recommended – Fastest)</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">This is the fastest and most automated method. Use it every day when you receive the Pastel order export file.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "↑ Import Pastel PDF" (top right button)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select and upload the Pastel PDF file from your computer</div><div class="step-desc">Make sure the file uses semicolon (;) as the delimiter. If the import fails, this is the most common cause.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">The AI automatically processes the file</div><div class="step-desc">It reads all orders, creates Sales Orders in the system, calculates what stock is already available, plans any additional production runs needed, and suggests exact quantities to produce.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Review the results on the next screen</div><div class="step-desc">Check the proposed orders and production plan. Make any edits needed.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Confirm — everything is created automatically</div><div class="step-desc">New orders appear in Sales Orders. Orders with sufficient stock move straight to the Packing Queue. Any required production appears in the Production module.</div></div></div>
+    </div>
+
+    <div class="sub-h">📞 Method 2: Phone Order</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Use this for orders received by phone or WhatsApp that aren't coming through Pastel.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "Phone Order" button (top left)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Search for the customer or add a new one</div><div class="step-desc">Type the customer name, account number, or phone number to search existing customers.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter Order Date and Delivery Date</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Add Order Lines</div><div class="step-desc">For each line: select Flavour + Pack Size + Quantity. The system calculates the total kg automatically.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Add Notes (optional)</div><div class="step-desc">Delivery instructions, WhatsApp message content, special requests, etc.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Save the order</div></div></div>
+    </div>
+
+    <div class="sub-h">🏪 Retail vs Shop Orders</div>
+    <table class="info-table">
+      <thead><tr><th>Order Type</th><th>How It Works</th><th>Badge Colour</th></tr></thead>
+      <tbody>
+        <tr><td>Retail <span class="badge badge-blue">Retail</span></td><td>Delivered to the customer. Appears on delivery routes. Standard flow.</td><td>Blue</td></tr>
+        <tr><td>Shop <span class="badge badge-purple">Shop</span></td><td>Collection only — customer picks up at factory. Never added to a delivery route. Status shows "Ready for Collection" when packed.</td><td>Purple</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The Pastel Import saves the most time. Use it every day. If an order isn't in Pastel, use Phone Order to capture it manually so nothing falls through the cracks.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('stock')">← Stock on Floor</button>
+      <button class="nav-btn primary" onclick="show('packing')">Module 06: Packing Queue →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ PACKING QUEUE ══════════════ -->
+  <div id="sec-packing" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 06</div>
+      <h2>Packing Queue</h2>
+      <div class="section-divider"></div>
+      <p>Every order that is ready to be physically packed appears here. This is where the packing team works from each shift.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Packing Queue</strong></div>
+
+    <div class="sub-h">📋 Understanding the Queue</div>
+    <table class="info-table">
+      <thead><tr><th>Indicator</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Total in Queue</td><td>Total number of orders waiting to be packed (including those without enough stock yet)</td></tr>
+        <tr><td>Ready to Pack</td><td>Orders where all required stock is available on the floor right now — start with these</td></tr>
+        <tr><td>In Queue badge</td><td>Order is waiting — stock is available, packing hasn't started</td></tr>
+        <tr><td>kg shown</td><td>Total weight of that order — gives packers an idea of the workload</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📦 How to Download the Packing Schedule PDF</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "↓ Packing Schedule" button (top of the Packing Queue screen)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">The PDF downloads automatically</div><div class="step-desc">It shows exactly what needs to be packed and the estimated time required. Print this and give it to the packing supervisor at the start of each shift.</div></div></div>
+    </div>
+
+    <div class="sub-h">✅ How to Pack an Order</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "Pack This Order" on the order card</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Review the packing details screen</div><div class="step-desc">The system shows you packing date, shift, packing number (auto-generated in format PACK[ddmmyy]-01, -02, etc.), and the supervisor and packer fields to fill in.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Confirm batch allocation</div><div class="step-desc">The system auto-selects batches using FIFO (oldest stock first). You can add multiple batches if an order requires stock from more than one baking batch. For mixed packs (buckets): select flavours manually or use FIFO auto-select.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Complete QA checks on the form</div><div class="step-desc">Tick all quality check items as required by your HACCP procedure.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Save / Complete the packing</div><div class="step-desc">The order moves to the Delivery Queue automatically. Stock on Floor is reduced accordingly.</div></div></div>
+    </div>
+
+    <div class="warn-box"><span>⚠️</span><div><strong>Do not upload HACCP documents here.</strong> HACCP documents are uploaded in bulk at the end of the day via the Dashboard. One upload covers all packed orders for that day.</div></div>
+
+    <div class="sub-h">🔄 Split / Partial Packing</div>
+    <p style="color:var(--text-mid); font-size:14px;">If an order is too large to pack in one shift, you can pack it across multiple shifts or days. The system tracks carry-over quantities and shows how much of the order has been packed and how much remains.</p>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('sales')">← Sales Orders</button>
+      <button class="nav-btn primary" onclick="show('delivery')">Module 07: Delivery Schedule →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DELIVERY ══════════════ -->
+  <div id="sec-delivery" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 07</div>
+      <h2>Delivery Schedule</h2>
+      <div class="section-divider"></div>
+      <p>Once orders are packed, they appear here ready for dispatch. This is the driver's daily work list.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Delivery Schedule</strong></div>
+
+    <div class="sub-h">🚛 How Delivery Works</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">All packed Retail orders automatically appear in the Delivery Schedule</div><div class="step-desc">Shop (collection) orders do not appear here — they show "Ready for Collection" status instead.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Orders are sorted by delivery date</div><div class="step-desc">Urgent (due today or overdue) appear at the top.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">The driver loads the vehicle and marks orders as Delivered</div><div class="step-desc">Once marked delivered, orders move to Past Orders and the Delivery Queue empties.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">When all deliveries are complete the screen shows "All Delivered!"</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Shop orders are always collection-only. Never add a Shop order to a delivery route or mark it as "Delivered." It should be marked "Ready for Collection" and the customer comes to the factory to collect.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('packing')">← Packing Queue</button>
+      <button class="nav-btn primary" onclick="show('supplier')">Module 08: Supplier Receipts →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SUPPLIER RECEIPTS ══════════════ -->
+  <div id="sec-supplier" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 08</div>
+      <h2>Supplier Receipts</h2>
+      <div class="section-divider"></div>
+      <p>Record all incoming raw materials from suppliers. Every receipt automatically updates raw material stock levels across the entire system.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Supplier Receipts</strong></div>
+
+    <div class="sub-h">📝 Recording a New Supplier Receipt</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "+ Record New Supplier Receipt" (large blue button)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select the Supplier</div><div class="step-desc">Choose from the dropdown of registered suppliers. The ingredient list will filter to only show ingredients supplied by this supplier.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Fill in Receipt Date and Invoice Number</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Add receipt lines — one line per ingredient</div></div></div>
+    </div>
+
+    <div class="sub-h">📋 Fields for Each Ingredient Line</div>
+    <ul class="field-list">
+      <li><span class="field-name">Ingredient <span class="req">REQUIRED</span></span><span class="field-desc">Select from the filtered dropdown (filtered by chosen supplier)</span></li>
+      <li><span class="field-name">Qty (KG) <span class="req">REQUIRED</span></span><span class="field-desc">Weight received in kilograms</span></li>
+      <li><span class="field-name">Cost per KG <span class="req">REQUIRED</span></span><span class="field-desc">Unit cost — used for stock valuation and profitability reports</span></li>
+      <li><span class="field-name">Expiry Date <span class="req">REQUIRED</span></span><span class="field-desc">Expiry date printed on the supplier's packaging</span></li>
+      <li><span class="field-name">Supplier Batch / Lot Number</span><span class="field-desc">The lot number from the supplier's label or delivery note. If you don't have it yet, select "Fill in later" — a reminder will appear on the Dashboard.</span></li>
+    </ul>
+
+    <div class="steps" style="margin-top:16px;">
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Complete the Quality Checklist</div><div class="step-desc">Tick all items on the quality checklist. Click "Tick All" if everything is in order. This is part of your HACCP supplier QC record.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Enter Received By (your name)</div></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Click Save — confirm when asked</div><div class="step-desc">Stock levels update immediately across the system.</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Always record supplier receipts on the same day that stock arrives. Delayed entries make your raw material stock figures inaccurate, which can lead to production planning errors.</div></div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div><strong>White Bread Flour is zero-rated</strong> — no VAT applies. When recording flour receipts, the VAT calculation will correctly show R 0.00 — this is expected and correct.</div></div>
+
+    <div class="sub-h">🕐 Viewing Past Receipts</div>
+    <p style="color:var(--text-mid); font-size:14px;">All previous supplier receipts are listed on the main Supplier Receipts screen, newest first. Click any receipt to view or edit it if a lot number needs to be added or a quantity corrected.</p>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('delivery')">← Delivery Schedule</button>
+      <button class="nav-btn primary" onclick="show('rawmat')">Module 09: Raw Materials →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ RAW MATERIALS ══════════════ -->
+  <div id="sec-rawmat" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 09</div>
+      <h2>Raw Materials</h2>
+      <div class="section-divider"></div>
+      <p>View and manage all ingredient stock levels. This screen updates automatically when supplier receipts are recorded and when production batches are saved.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Raw Materials</strong></div>
+
+    <div class="sub-h">📊 What You'll See</div>
+    <table class="info-table">
+      <thead><tr><th>Display Element</th><th>Meaning</th></tr></thead>
+      <tbody>
+        <tr><td>Current Stock (KG)</td><td>Total kg of this ingredient currently on hand, across all active lots</td></tr>
+        <tr><td>Minimum Stock Level</td><td>The threshold below which a Low Stock alert fires on the Dashboard</td></tr>
+        <tr><td>Lot breakdown</td><td>Each lot number received is listed separately with its own qty and expiry date — important for traceability</td></tr>
+        <tr><td>Supplier linked</td><td>Which supplier provides this ingredient — used to filter ingredient options when recording receipts</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Always check Raw Materials before starting a large production run. If Cream of Tartar or another key ingredient is below its minimum, place a Supplier Order first.</div></div>
+
+    <div class="warn-box"><span>⚠️</span><div>If a supplier ingredient link appears broken or an ingredient doesn't show up in the receipt dropdown, contact your Admin. The ingredient may need its supplier reference updated — this requires linking by supplier ID, not just typing the supplier name.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('supplier')">← Supplier Receipts</button>
+      <button class="nav-btn primary" onclick="show('shoppos')">Module 10: Shop POS →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ SHOP POS ══════════════ -->
+  <div id="sec-shoppos" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 10</div>
+      <h2>Shop POS</h2>
+      <div class="section-divider"></div>
+      <p>Point of Sale for walk-in customers at the factory shop. All sales here are recorded against stock and appear in sales reports.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Shop POS</strong></div>
+
+    <div class="sub-h">🛍️ Processing a Shop Sale</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Open Shop POS from the sidebar</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select the products the customer wants</div><div class="step-desc">Choose flavour and pack size. The system shows current availability.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter quantities and confirm the sale</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Stock is deducted automatically</div><div class="step-desc">The sale appears in Reports and the stock level on Stock on Floor updates immediately.</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Shop POS sales are always collection — the customer is present. Do not confuse with Shop-type Sales Orders (which are pre-orders placed and then collected later).</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('rawmat')">← Raw Materials</button>
+      <button class="nav-btn primary" onclick="show('packing-report')">Module 11: Final Packing Report →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ FINAL PACKING REPORT ══════════════ -->
+  <div id="sec-packing-report" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 11</div>
+      <h2>Final Packing Report</h2>
+      <div class="section-divider"></div>
+      <p>The most important document in the system for compliance. This is the official HACCP / traceability record — the complete journey of every order from raw material to customer delivery.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Final Packing Report</strong></div>
+
+    <div class="sub-h">🔍 Searching for a Report</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Go to Final Packing Report</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Use the search bar or filter tabs at the top</div><div class="step-desc">You can search across "All Fields" or narrow by a specific filter tab.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter your search term</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Click Search — the full report displays below</div></div></div>
+    </div>
+
+    <div class="sub-h">🔎 What You Can Search By</div>
+    <ul class="field-list">
+      <li><span class="field-name">Baking Batch #</span><span class="field-desc">e.g. CC220626-01 — find all orders that used biscuits from a specific baking batch</span></li>
+      <li><span class="field-name">Packing Batch #</span><span class="field-desc">e.g. PACK220626-01 — find a specific packing run. Most commonly used for complaints.</span></li>
+      <li><span class="field-name">Supplier Batch #</span><span class="field-desc">e.g. GH17/322-342 — find all product that used a specific ingredient lot</span></li>
+      <li><span class="field-name">Customer Name</span><span class="field-desc">e.g. "Fresh Stop Heidelberg" — find all packed orders for a customer</span></li>
+      <li><span class="field-name">Invoice / Order Number</span><span class="field-desc">e.g. IN106586 — find a specific order from its invoice number</span></li>
+    </ul>
+
+    <div class="sub-h">📄 What the Report Contains</div>
+    <table class="info-table">
+      <thead><tr><th>Report Section</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Sales Order Details</td><td>Customer name, order number, delivery date, order type (Retail/Shop)</td></tr>
+        <tr><td>Products Packed</td><td>All flavours and pack types included in this order</td></tr>
+        <tr><td>Batches Allocated</td><td>Which baking batches were used to fulfil this order</td></tr>
+        <tr><td>Raw Ingredients</td><td>All ingredients and their supplier lot numbers used in the allocated batches</td></tr>
+        <tr><td>Production Runs</td><td>Production supervisors, QA notes for each batch used</td></tr>
+        <tr><td>Packing Information</td><td>Packing date, shift, packing number, packing supervisor and packers</td></tr>
+        <tr><td>Quality Checks</td><td>All QA check items completed during packing</td></tr>
+        <tr><td>Sign-offs</td><td>QA Manager signature (Nico Oosthuizen) and supervisor sign-off</td></tr>
+        <tr><td>Linked HACCP Documents</td><td>The scanned HACCP document uploaded at end of day for this order's date</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Use this report for customer complaints, food safety audits, and retailer traceability requests. It provides complete end-to-end documentation — from the supplier's raw ingredient lot all the way to the customer who received the product.</div></div>
+
+    <div class="warn-box"><span>⚠️</span><div>If the HACCP Document section shows "no document linked," it means the end-of-day upload was missed for that date. Go to the Dashboard HACCP Upload, select the correct date, and upload the document to link it retroactively.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('shoppos')">← Shop POS</button>
+      <button class="nav-btn primary" onclick="show('traceability')">Module 12: Traceability →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ TRACEABILITY ══════════════ -->
+  <div id="sec-traceability" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 12</div>
+      <h2>Traceability</h2>
+      <div class="section-divider"></div>
+      <p>Full end-to-end trace of any batch — instantly see where it went, which customers received it, and all production and packing details. Critical for audits, complaints, and product recalls.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Traceability</strong></div>
+
+    <div class="sub-h">🔍 How to Search</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Go to Traceability</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Choose the search type using the tab buttons</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter the number and click Search</div></div></div>
+    </div>
+
+    <div class="sub-h">🔎 Search Types Explained</div>
+    <table class="info-table">
+      <thead><tr><th>Search Type</th><th>When to Use It</th><th>Example Input</th></tr></thead>
+      <tbody>
+        <tr><td>Baking Batch <span class="badge badge-gold">Most Useful</span></td><td>Find all orders that used biscuits from a specific baking run. Use for production quality issues.</td><td>CC220626-01</td></tr>
+        <tr><td>Supplier Batch</td><td>Find all product made from a specific ingredient lot. Use for supplier quality claims or ingredient recalls.</td><td>GH17/322-342</td></tr>
+        <tr><td>Packing Batch <span class="badge badge-gold">Most Useful</span></td><td>Find exactly which stores/customers received a specific packing run. Best for customer complaints.</td><td>PACK220626-01</td></tr>
+        <tr><td>By Customer</td><td>See all orders and batches delivered to a specific customer. Use for account queries.</td><td>Fresh Stop Heidelberg</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📋 What the Trace Report Shows</div>
+    <ul class="field-list">
+      <li><span class="field-name">Products Made</span><span class="field-desc">Which biscuit flavours and quantities came from the searched batch</span></li>
+      <li><span class="field-name">Customers / Orders</span><span class="field-desc">Which customers received product from this batch, with order numbers</span></li>
+      <li><span class="field-name">Packing Details</span><span class="field-desc">When it was packed, which shift, packing number and supervisor</span></li>
+      <li><span class="field-name">Delivery Information</span><span class="field-desc">Delivery date and status</span></li>
+      <li><span class="field-name">Linked Reports</span><span class="field-desc">Links to the Full Packing Reports for each related order</span></li>
+    </ul>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>If a customer phones to report a quality problem with a product, ask for the packing batch number printed on the box. Search by Packing Batch — you'll instantly see every other store/customer that received product from that same packing run, allowing you to manage a targeted recall.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('packing-report')">← Final Packing Report</button>
+      <button class="nav-btn primary" onclick="show('reports')">Module 13: Reports →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ REPORTS ══════════════ -->
+  <div id="sec-reports" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 13</div>
+      <h2>Reports & Analytics</h2>
+      <div class="section-divider"></div>
+      <p>Business insights, performance data, and analytics for the entire operation. Use monthly for management reviews and daily for expiry risk monitoring.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Reports</strong></div>
+
+    <div class="sub-h">📅 Setting the Date Range</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Always set your Start Date and End Date at the top before reading any report. All charts and figures filter to the selected period.</p>
+
+    <div class="sub-h">📊 KPI Overview Cards</div>
+    <table class="info-table">
+      <thead><tr><th>Card</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Total Production</td><td>Total kg produced and number of batches in the selected period</td></tr>
+        <tr><td>Total Sales</td><td>Total kg sold and number of customer orders in the period</td></tr>
+        <tr><td>Stock Value</td><td>Rand value of current stock (raw materials + finished goods combined)</td></tr>
+        <tr><td>Expiry Risk</td><td>Number of batches approaching expiry. Red flag if high — act immediately.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📑 Report Tabs</div>
+    <table class="info-table">
+      <thead><tr><th>Tab</th><th>What It Shows</th><th>Use For</th></tr></thead>
+      <tbody>
+        <tr><td>Production</td><td>Production by product, kg per flavour, batch efficiency</td><td>Reviewing baker output and efficiency</td></tr>
+        <tr><td>Sales</td><td>Sales trends, order volumes, top customers</td><td>Sales performance review</td></tr>
+        <tr><td>Suppliers</td><td>Supplier performance, receipt values, delivery frequency</td><td>Supplier negotiations and QC review</td></tr>
+        <tr><td>Pack Types</td><td>Sales breakdown by box / bucket sizes</td><td>Packaging demand planning</td></tr>
+        <tr><td>Stock</td><td>Current stock levels and recent movements</td><td>Stock management</td></tr>
+        <tr><td>Expiry Risk <span class="badge badge-out">IMPORTANT</span></td><td>Products nearing their expiry date</td><td>Daily check — prevent waste</td></tr>
+        <tr><td>Demand Forecast</td><td>Projected future production needs based on order history</td><td>Weekly production planning</td></tr>
+        <tr><td>Profitability</td><td>Revenue vs cost of goods analysis</td><td>Monthly management review</td></tr>
+        <tr><td>Stock Value</td><td>Detailed rand valuation of all stock on hand</td><td>Financial reporting</td></tr>
+        <tr><td>Expiry Calendar</td><td>Calendar view showing when each batch expires</td><td>Proactive dispatch planning</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Check the <strong>Expiry Risk</strong> tab every day and the <strong>Demand Forecast</strong> tab every week. Generate full reports monthly for management reviews.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('traceability')">← Traceability</button>
+      <button class="nav-btn primary" onclick="show('imports')">Module 14: Data Imports →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DATA IMPORTS ══════════════ -->
+  <div id="sec-imports" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 14</div>
+      <h2>Data Imports & Stocktakes</h2>
+      <div class="section-divider"></div>
+      <p>Upload physical stocktake sheets, bulk update stock from any document format, and import customers from Pastel.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Data Imports</strong> (highlighted in yellow)</div>
+
+    <div class="sub-h">📤 The Three Upload Options</div>
+
+    <div style="background:var(--white); border:1px solid var(--brown-200); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:14px; color:var(--text-dark); margin-bottom:8px;">1. Upload Unpacked Stock on Floor <span class="badge badge-gold">Bulk Biscuits in KG</span></div>
+      <p style="font-size:13.5px; color:var(--text-mid);">Use this for handwritten physical stock count sheets showing kg of unpacked (bulk) biscuits awaiting packing per flavour. Supports PDF, JPG, PNG.</p>
+    </div>
+
+    <div style="background:var(--white); border:1px solid var(--brown-200); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:14px; color:var(--text-dark); margin-bottom:8px;">2. Upload Packed Stock on Floor <span class="badge badge-blue">Finished Products</span></div>
+      <p style="font-size:13.5px; color:var(--text-mid);">For all finished and packed products — family boxes (2.9kg), big boxes, buckets. Family boxes are auto-broken down by fixed recipe. Big boxes can be assigned by box type. Buckets use manual flavour distribution. The document must contain a "Finished Biscuit Product" section for the system to read it correctly.</p>
+    </div>
+
+    <div style="background:var(--brown-50); border:2px solid var(--gold); border-radius:12px; padding:20px; margin-bottom:16px;">
+      <div style="font-weight:700; font-size:14px; color:var(--text-dark); margin-bottom:8px;">3. AI Stock List Update ⭐ Recommended</div>
+      <p style="font-size:13.5px; color:var(--text-mid);">The most flexible option. Upload <strong>any</strong> stock list — raw ingredients, mixed raw + finished, Excel files, PDFs, photos of handwritten lists. The AI reads and extracts the data automatically. Best for monthly raw material stocktakes.</p>
+    </div>
+
+    <div class="sub-h">📋 Step-by-Step Upload Process</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Select the correct Stock Take Date</div><div class="step-desc">Usually today's date. This is the date the physical count was done.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Choose the correct upload box</div><div class="step-desc">Unpacked stock → box 1. Packed stock → box 2. Raw materials or mixed → box 3 (AI).</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Click "Choose File"</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Select your file</div><div class="step-desc">PDF, JPG, PNG, and Excel are all supported.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Click Upload and wait for confirmation</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Verify the numbers updated correctly</div><div class="step-desc">Go to Stock on Floor (for finished goods) or Raw Materials (for ingredients) and confirm the figures match your count sheet.</div></div></div>
+    </div>
+
+    <div class="sub-h">👥 Importing Customers from Pastel</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Export a customer CSV from Pastel</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Go to Data Imports → "Import Customers from Pastel"</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Upload the CSV file</div><div class="step-desc">The system extracts customer names, account numbers, contact details and phone numbers automatically.</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>You can upload multiple times if needed — the latest upload overwrites the previous values. Make sure documents are clear and well-lit if you're photographing handwritten sheets.</div></div>
+
+    <div class="warn-box"><span>⚠️</span><div>If an upload fails, check that: (a) the correct file format is used (PDF/JPG/PNG/Excel), (b) the date is set before uploading, and (c) for the Packed Stock upload, the document contains a clearly labelled "Finished Biscuit Product" section.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('reports')">← Reports</button>
+      <button class="nav-btn primary" onclick="show('users')">Module 15: User Management →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ USER MANAGEMENT ══════════════ -->
+  <div id="sec-users" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Module 15</div>
+      <h2>User Management</h2>
+      <div class="section-divider"></div>
+      <p>Add, edit, and manage staff accounts and their access levels. Admin access required.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Left sidebar → <strong>User Management</strong> (Admin only — not visible to other roles)</div>
+
+    <div class="sub-h">👤 User Roles</div>
+    <table class="info-table">
+      <thead><tr><th>Role</th><th>Access Level</th></tr></thead>
+      <tbody>
+        <tr><td>Admin</td><td>Full access to all modules including User Management and system settings</td></tr>
+        <tr><td>Manager</td><td>Full operational access — all modules except User Management</td></tr>
+        <tr><td>Sales</td><td>Sales Orders, Supplier Receipts, Pastel upload. Read-only access to Customers, Pack Sizes, Suppliers, Ingredients</td></tr>
+        <tr><td>Production Supervisor</td><td>Production, Past Production, Stock on Floor</td></tr>
+        <tr><td>Packing Supervisor</td><td>Packing Queue, Delivery Schedule</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">➕ Adding a New Staff Member</div>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Go to User Management</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Click "+ Add User"</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter their name, email address and assign a role</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Save — they will receive a login invitation</div></div></div>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The system URL is <strong>https://tembisa-hub.base44.app</strong> — share this with new staff along with their login credentials. They can also access the system via the custom subdomain if configured.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('imports')">← Data Imports</button>
+      <button class="nav-btn primary" onclick="show('trouble')">Troubleshooting →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ TROUBLESHOOTING ══════════════ -->
+  <div id="sec-trouble" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Support</div>
+      <h2>Troubleshooting</h2>
+      <div class="section-divider"></div>
+      <p>Common issues and how to fix them. Try these before contacting your system administrator.</p>
+    </div>
+
+    <div class="trouble-item"><div class="trouble-q">Pastel PDF import fails — what's wrong?</div><div class="trouble-a">The most common cause is the file delimiter. Pastel exports must use a <strong>semicolon (;)</strong> as the delimiter, not a comma. Open the file in Notepad to check — if values are separated by commas, re-export from Pastel with the correct setting. Also ensure the file is a genuine Pastel export, not a manually created CSV.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">Stock levels aren't updating after an upload</div><div class="trouble-a">After uploading a stocktake, you must click <strong>"Confirm & Import"</strong> on the results screen. If you closed the window before confirming, the upload did not complete. Repeat the upload and confirm. Then refresh the Stock on Floor or Raw Materials screen.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">An ingredient isn't showing in the supplier receipt dropdown</div><div class="trouble-a">Ingredients are filtered by the selected supplier. First check that you have selected the correct supplier for this receipt. If the ingredient genuinely belongs to that supplier but still doesn't appear, the supplier link on the ingredient record may be broken — contact Admin. The fix requires linking by supplier ID, not by typing the supplier name as text.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">Pack types or products are missing from dropdowns</div><div class="trouble-a">Contact Admin to run the pack type fix functions. Missing pack types usually appear after a data migration or if a new product was added to the system without the correct configuration.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">Costs look wrong in reports</div><div class="trouble-a">Cost data comes from two sources: the Ingredients table (raw material cost per kg) and the ProductCodeMappings table (product pricing). Ask Admin to update the relevant entry. Do not adjust costs directly in a supplier receipt unless the unit price was genuinely different for that delivery.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">The HACCP document isn't showing on an order's Final Packing Report</div><div class="trouble-a">The HACCP document links to the <em>date</em> it was uploaded on the Dashboard. If the packing date and the upload date don't match, the link won't form. Go to the Dashboard, select the correct historical date, and upload the document for that date.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">Stock on Floor shows OUT but we have stock in the warehouse</div><div class="trouble-a">The system only tracks stock that has been formally recorded — either via a production batch save or a stocktake upload. Manually counted stock that wasn't entered won't appear. Upload a stocktake via Data Imports to bring the figures in line.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">I can't find a menu item I should have access to</div><div class="trouble-a">Your account role determines which menu items are visible. If you need access to a module your role doesn't include, ask Admin to update your role in User Management. Some items (e.g. User Management itself) are Admin-only by design.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">The system is running slowly or looks outdated</div><div class="trouble-a">Press <strong>F5</strong> (Windows/Linux) or <strong>Cmd+R</strong> (Mac) to force a browser refresh. The Dashboard refreshes automatically but other screens may need a manual refresh. If the issue persists, clear your browser cache (Ctrl+Shift+Delete) and try again.</div></div>
+
+    <div class="trouble-item"><div class="trouble-q">Two users edited the same supplier receipt at the same time and the quantities are wrong</div><div class="trouble-a">Concurrent edits by two users simultaneously can cause conflicts. One user's changes may overwrite the other. Always check the most recent supplier receipt after any edits if two people have been in the system at the same time. Contact Admin if the quantities need correcting via a backend reconciliation.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('users')">← User Management</button>
+      <button class="nav-btn primary" onclick="show('rules')">Business Rules →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ BUSINESS RULES ══════════════ -->
+  <div id="sec-rules" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Reference</div>
+      <h2>Important Business Rules</h2>
+      <div class="section-divider"></div>
+      <p>These rules are built into the system and reflect how Crunch 'n Munch operates. Understanding them prevents errors.</p>
+    </div>
+
+    <table class="info-table">
+      <thead><tr><th>Rule</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Assorted / Mix — never batch separately</td><td>The system distributes Assorted KG across 5 flavours automatically: Shortbread, Ginger, Choc Chip, Coconut, Crunchie. Never create a separate "Assorted" production batch.</td></tr>
+        <tr><td>FIFO is mandatory</td><td>Stock is always packed oldest-batch-first. The system enforces this in the Packing Queue. Never override this order without management approval.</td></tr>
+        <tr><td>Batch number format</td><td>Auto-generated as ddmmyy-shift (e.g. 220626-01 = 22 June 2026, Day shift). Never manually create or alter batch numbers.</td></tr>
+        <tr><td>HACCP upload — once per day</td><td>One upload at day-end covers all packed orders for that day. Uploading more than once for the same date overwrites the previous upload.</td></tr>
+        <tr><td>Shop orders — always collection</td><td>Shop-type orders are never delivered. They must never appear on a delivery route. Status is "Ready for Collection."</td></tr>
+        <tr><td>White Bread Flour — zero-rated</td><td>No VAT applies to White Bread Flour purchases. The VAT line will show R 0.00 — this is correct.</td></tr>
+        <tr><td>Lot numbers — always capture</td><td>Every supplier ingredient must have a lot number for traceability compliance. "Fill in later" is a temporary measure only — complete it the same day.</td></tr>
+        <tr><td>Save confirmation always appears</td><td>The system asks "Are you sure?" before every save. This is intentional — always review the screen before confirming.</td></tr>
+        <tr><td>Supplier links — by ID not text</td><td>Ingredient-to-supplier links in the system use database IDs. Typing a supplier name in a text field does NOT create a link. Use the dropdown selector.</td></tr>
+        <tr><td>Concurrent edits — be careful</td><td>If two users edit the same record simultaneously, the last save wins. Coordinate with colleagues before editing shared records.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('trouble')">← Troubleshooting</button>
+      <button class="nav-btn primary" onclick="show('home')">↑ Back to Top</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ FLOWCHARTS ══════════════ -->
+  <div id="sec-flowcharts" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Reference</div>
+      <h2>Process Flowcharts</h2>
+      <div class="section-divider"></div>
+      <p>Two visual maps of how the operation runs — use these to understand the big picture before diving into individual modules.</p>
+    </div>
+
+    <div class="sub-h">🛒 Chart 1: Order Lifecycle — New Order to Completion</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:20px;">Every customer order follows this path through the system. Retail orders go to delivery; Shop orders go to collection.</p>
+
+    <div style="background:var(--white); border:1px solid var(--brown-200); border-radius:14px; padding:28px 20px; margin-bottom:40px; overflow:hidden;">
+      <svg width="100%" viewBox="0 0 680 660" role="img" xmlns="http://www.w3.org/2000/svg">
+        <title>Order lifecycle flowchart</title>
+        <desc>Shows the journey of a customer order from creation through packing to either retail delivery or shop collection, ending in Past Orders.</desc>
+        <defs>
+          <marker id="arr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- START pill -->
+        <rect x="230" y="18" width="220" height="42" rx="21" fill="#2C1A0E" stroke="#2C1A0E" stroke-width="0.5"/>
+        <text x="340" y="39" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#C8A951">New customer order</text>
+
+        <line x1="340" y1="60" x2="340" y2="95" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+        <!-- Sales Orders -->
+        <rect x="210" y="95" width="260" height="58" rx="8" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+        <text x="340" y="116" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#085041">Sales Orders</text>
+        <text x="340" y="137" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="12" fill="#0F6E56">Pastel import or manual entry</text>
+
+        <line x1="340" y1="153" x2="340" y2="190" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+        <!-- Packing Queue -->
+        <rect x="210" y="190" width="260" height="58" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+        <text x="340" y="211" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#633806">Packing Queue</text>
+        <text x="340" y="232" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="12" fill="#854F0B">Order waits for available stock</text>
+
+        <line x1="340" y1="248" x2="340" y2="285" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+        <!-- Pack This Order -->
+        <rect x="210" y="285" width="260" height="58" rx="8" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+        <text x="340" y="306" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#633806">Pack this order</text>
+        <text x="340" y="327" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="12" fill="#854F0B">Batch allocation · QA checks · FIFO</text>
+
+        <line x1="340" y1="343" x2="340" y2="382" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr1)"/>
+
+        <!-- Decision diamond -->
+        <polygon points="340,382 430,416 340,450 250,416" fill="#F4E4D4" stroke="#8B5030" stroke-width="1"/>
+        <text x="340" y="412" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A">Retail or</text>
+        <text x="340" y="428" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A">Shop?</text>
+
+        <!-- Shop branch left -->
+        <path d="M250 416 L130 416 L130 490" fill="none" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="5 3"/>
+        <text x="185" y="408" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#534AB7">Shop</text>
+
+        <!-- Retail branch right -->
+        <path d="M430 416 L550 416 L550 490" fill="none" stroke="#185FA5" stroke-width="1.5" marker-end="url(#arr1)" stroke-dasharray="5 3"/>
+        <text x="495" y="408" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#185FA5">Retail</text>
+
+        <!-- Shop: Ready for collection -->
+        <rect x="50" y="490" width="160" height="58" rx="8" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+        <text x="130" y="511" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#3C3489">Ready for</text>
+        <text x="130" y="529" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#3C3489">collection</text>
+
+        <text x="130" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5F5E5A">Customer collects at factory</text>
+
+        <!-- Retail: Delivery Schedule -->
+        <rect x="470" y="490" width="160" height="58" rx="8" fill="#E6F1FB" stroke="#185FA5" stroke-width="0.5"/>
+        <text x="550" y="511" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#0C447C">Delivery</text>
+        <text x="550" y="529" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="13" font-weight="600" fill="#0C447C">Schedule</text>
+
+        <text x="550" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#5F5E5A">Driver dispatches to customer</text>
+
+        <!-- Both converge to Past Orders -->
+        <path d="M130 548 L130 610 L340 610" fill="none" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr1)"/>
+        <path d="M550 548 L550 610 L340 610" fill="none" stroke="#8B5030" stroke-width="1.5"/>
+
+        <!-- Past Orders pill -->
+        <rect x="210" y="595" width="260" height="42" rx="21" fill="#2D6A4F" stroke="#2D6A4F" stroke-width="0.5"/>
+        <text x="340" y="616" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#D8F3DC">Past Orders — complete</text>
+
+        <!-- Side note: HACCP -->
+        <rect x="10" y="292" width="140" height="42" rx="6" fill="#DBE9FA" stroke="#B8D4F5" stroke-width="0.5"/>
+        <text x="80" y="309" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#1B4F8A">HACCP upload</text>
+        <text x="80" y="325" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#1B4F8A">done once at day-end</text>
+        <line x1="150" y1="313" x2="208" y2="313" stroke="#B8D4F5" stroke-width="0.8" stroke-dasharray="3 2"/>
+
+        <!-- Legend -->
+        <rect x="490" y="188" width="175" height="95" rx="6" fill="#FAF7F2" stroke="#E8C9B0" stroke-width="0.5"/>
+        <text x="502" y="208" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2E1A">Legend</text>
+        <rect x="502" y="218" width="12" height="12" rx="2" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+        <text x="520" y="229" font-family="Inter,sans-serif" font-size="11" fill="#4A2E1A">System screen</text>
+        <rect x="502" y="236" width="12" height="12" rx="2" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+        <text x="520" y="247" font-family="Inter,sans-serif" font-size="11" fill="#4A2E1A">Packing step</text>
+        <line x1="502" y1="262" x2="514" y2="262" stroke="#534AB7" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <text x="520" y="265" font-family="Inter,sans-serif" font-size="11" fill="#4A2E1A">Shop route</text>
+        <line x1="502" y1="278" x2="514" y2="278" stroke="#185FA5" stroke-width="1.5" stroke-dasharray="4 2"/>
+        <text x="520" y="281" font-family="Inter,sans-serif" font-size="11" fill="#4A2E1A">Retail route</text>
+      </svg>
+    </div>
+
+    <div class="sub-h">🏭 Chart 2: Full Factory Process — Raw Material to Customer</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:20px;">The complete end-to-end journey of a biscuit — from the moment ingredients arrive at the factory to the moment product reaches a customer. This includes the scan-back step where physical packing documents are scanned and automatically read by the system.</p>
+
+    <div style="background:var(--white); border:1px solid var(--brown-200); border-radius:14px; padding:28px 20px; margin-bottom:32px; overflow:hidden;">
+      <svg width="100%" viewBox="0 0 680 1020" role="img" xmlns="http://www.w3.org/2000/svg">
+        <title>Full factory process flowchart</title>
+        <desc>End-to-end factory process showing raw material receipt, production, stock, packing with document scan-back, and delivery stages.</desc>
+        <defs>
+          <marker id="arr2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="context-stroke" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+
+        <!-- Phase labels (left strip) -->
+        <rect x="0" y="0" width="28" height="130" rx="0" fill="#2C1A0E" opacity="0.08"/>
+        <rect x="0" y="130" width="28" height="200" rx="0" fill="#2C1A0E" opacity="0.05"/>
+        <rect x="0" y="330" width="28" height="160" rx="0" fill="#2C1A0E" opacity="0.08"/>
+        <rect x="0" y="490" width="28" height="310" rx="0" fill="#2C1A0E" opacity="0.05"/>
+        <rect x="0" y="800" width="28" height="220" rx="0" fill="#2C1A0E" opacity="0.08"/>
+
+        <text x="14" y="65" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#4A2E1A" transform="rotate(-90,14,65)">Receiving</text>
+        <text x="14" y="230" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#4A2E1A" transform="rotate(-90,14,230)">Production</text>
+        <text x="14" y="410" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#4A2E1A" transform="rotate(-90,14,410)">Stock</text>
+        <text x="14" y="645" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#4A2E1A" transform="rotate(-90,14,645)">Packing</text>
+        <text x="14" y="910" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#4A2E1A" transform="rotate(-90,14,910)">Dispatch</text>
+
+        <!-- ── PHASE 1: RECEIVING ── -->
+        <rect x="38" y="14" width="600" height="100" rx="10" fill="#FAEEDA" stroke="#854F0B" stroke-width="0.5"/>
+        <text x="100" y="34" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#633806" text-anchor="start">01  Receiving raw materials</text>
+
+        <rect x="55" y="48" width="170" height="52" rx="6" fill="#FAF5EE" stroke="#C4845A" stroke-width="0.5"/>
+        <text x="140" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A" dominant-baseline="central">Supplier delivery arrives</text>
+        <text x="140" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6B3F22" dominant-baseline="central">With invoice &amp; lot numbers</text>
+
+        <line x1="225" y1="74" x2="262" y2="74" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="262" y="48" width="170" height="52" rx="6" fill="#FAF5EE" stroke="#C4845A" stroke-width="0.5"/>
+        <text x="347" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A" dominant-baseline="central">Record Supplier Receipt</text>
+        <text x="347" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6B3F22" dominant-baseline="central">Quality checklist · lot numbers</text>
+
+        <line x1="432" y1="74" x2="468" y2="74" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="468" y="48" width="155" height="52" rx="6" fill="#FAF5EE" stroke="#C4845A" stroke-width="0.5"/>
+        <text x="545" y="66" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A" dominant-baseline="central">Raw Materials stock</text>
+        <text x="545" y="84" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6B3F22" dominant-baseline="central">Updated automatically</text>
+
+        <!-- ── DOWN ARROW ── -->
+        <line x1="340" y1="114" x2="340" y2="144" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- ── PHASE 2: PRODUCTION ── -->
+        <rect x="38" y="144" width="600" height="170" rx="10" fill="#E1F5EE" stroke="#0F6E56" stroke-width="0.5"/>
+        <text x="100" y="164" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#085041" text-anchor="start">02  Production (baking)</text>
+
+        <rect x="55" y="178" width="160" height="52" rx="6" fill="#F0FBF7" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="135" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#085041" dominant-baseline="central">Production Schedule</text>
+        <text x="135" y="214" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#0F6E56" dominant-baseline="central">PDF printed for bakers</text>
+
+        <line x1="215" y1="204" x2="250" y2="204" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="250" y="178" width="180" height="52" rx="6" fill="#F0FBF7" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="340" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#085041" dominant-baseline="central">Bake the batch</text>
+        <text x="340" y="214" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#0F6E56" dominant-baseline="central">Day or Night shift</text>
+
+        <line x1="430" y1="204" x2="465" y2="204" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="465" y="178" width="158" height="52" rx="6" fill="#F0FBF7" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="544" y="196" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#085041" dominant-baseline="central">+ New Production</text>
+        <text x="544" y="214" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#0F6E56" dominant-baseline="central">Record batch &amp; lots used</text>
+
+        <line x1="340" y1="230" x2="340" y2="270" stroke="#0F6E56" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="250" y="270" width="180" height="32" rx="6" fill="#F0FBF7" stroke="#1D9E75" stroke-width="0.5"/>
+        <text x="340" y="286" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#085041" dominant-baseline="central">Ingredients deducted from stock</text>
+
+        <!-- ── DOWN ARROW ── -->
+        <line x1="340" y1="314" x2="340" y2="344" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- ── PHASE 3: STOCK ON FLOOR ── -->
+        <rect x="38" y="344" width="600" height="130" rx="10" fill="#F4E4D4" stroke="#8B5030" stroke-width="0.5"/>
+        <text x="100" y="364" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#4A2E1A" text-anchor="start">03  Stock on Floor</text>
+
+        <rect x="55" y="378" width="180" height="52" rx="6" fill="#FBF5EF" stroke="#C4845A" stroke-width="0.5"/>
+        <text x="145" y="396" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A" dominant-baseline="central">Bulk unpacked biscuits</text>
+        <text x="145" y="414" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6B3F22" dominant-baseline="central">Awaiting packing · FIFO sorted</text>
+
+        <line x1="235" y1="404" x2="270" y2="404" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="270" y="378" width="195" height="52" rx="6" fill="#FBF5EF" stroke="#C4845A" stroke-width="0.5"/>
+        <text x="367" y="396" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A" dominant-baseline="central">Customer order received</text>
+        <text x="367" y="414" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6B3F22" dominant-baseline="central">Sales Orders → Packing Queue</text>
+
+        <line x1="465" y1="404" x2="500" y2="404" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="500" y="378" width="122" height="52" rx="6" fill="#FBF5EF" stroke="#C4845A" stroke-width="0.5"/>
+        <text x="561" y="396" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#4A2E1A" dominant-baseline="central">Ready to Pack</text>
+        <text x="561" y="414" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#6B3F22" dominant-baseline="central">Stock confirmed</text>
+
+        <!-- ── DOWN ARROW ── -->
+        <line x1="340" y1="474" x2="340" y2="510" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- ── PHASE 4: PACKING ── -->
+        <rect x="38" y="510" width="600" height="274" rx="10" fill="#EEEDFE" stroke="#534AB7" stroke-width="0.5"/>
+        <text x="100" y="530" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#3C3489" text-anchor="start">04  Packing</text>
+
+        <!-- Step A: Print schedule -->
+        <rect x="55" y="546" width="162" height="52" rx="6" fill="#F7F6FE" stroke="#7F77DD" stroke-width="0.5"/>
+        <text x="136" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#3C3489" dominant-baseline="central">Print Packing Schedule</text>
+        <text x="136" y="582" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#534AB7" dominant-baseline="central">PDF for packing team</text>
+
+        <line x1="217" y1="572" x2="252" y2="572" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- Step B: Pack order physically -->
+        <rect x="252" y="546" width="175" height="52" rx="6" fill="#F7F6FE" stroke="#7F77DD" stroke-width="0.5"/>
+        <text x="339" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#3C3489" dominant-baseline="central">Pack order physically</text>
+        <text x="339" y="582" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#534AB7" dominant-baseline="central">Fill in paper packing form</text>
+
+        <line x1="427" y1="572" x2="462" y2="572" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- Step C: Complete paper form -->
+        <rect x="462" y="546" width="162" height="52" rx="6" fill="#F7F6FE" stroke="#7F77DD" stroke-width="0.5"/>
+        <text x="543" y="564" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#3C3489" dominant-baseline="central">Complete paper form</text>
+        <text x="543" y="582" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#534AB7" dominant-baseline="central">QA checks · supervisors sign</text>
+
+        <!-- Down arrow to scan step -->
+        <line x1="340" y1="598" x2="340" y2="636" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- SCAN STEP — highlighted box -->
+        <rect x="150" y="636" width="380" height="80" rx="10" fill="#2C1A0E" stroke="#C8A951" stroke-width="1.5"/>
+        <text x="340" y="659" text-anchor="middle" font-family="Inter,sans-serif" font-size="13" font-weight="700" fill="#C8A951" dominant-baseline="central">Scan completed form (Epson scanner)</text>
+        <text x="340" y="679" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="rgba(255,255,255,0.7)" dominant-baseline="central">Searchable PDF / OCR mode</text>
+        <text x="340" y="697" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" fill="rgba(255,255,255,0.7)" dominant-baseline="central">System auto-reads &amp; completes the packing record</text>
+
+        <!-- Down arrow from scan -->
+        <line x1="340" y1="716" x2="340" y2="750" stroke="#534AB7" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- Step: Packing record completed -->
+        <rect x="200" y="750" width="280" height="52" rx="6" fill="#F7F6FE" stroke="#7F77DD" stroke-width="0.5"/>
+        <text x="340" y="768" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#3C3489" dominant-baseline="central">Packing record completed in Hub</text>
+        <text x="340" y="786" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#534AB7" dominant-baseline="central">Order moves to Delivery Schedule</text>
+
+        <!-- ── DOWN ARROW ── -->
+        <line x1="340" y1="802" x2="340" y2="836" stroke="#8B5030" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <!-- ── PHASE 5: DISPATCH ── -->
+        <rect x="38" y="836" width="600" height="164" rx="10" fill="#EAF3DE" stroke="#3B6D11" stroke-width="0.5"/>
+        <text x="100" y="856" font-family="Inter,sans-serif" font-size="11" font-weight="600" fill="#27500A" text-anchor="start">05  Dispatch &amp; compliance</text>
+
+        <rect x="55" y="870" width="160" height="52" rx="6" fill="#F3FAE8" stroke="#639922" stroke-width="0.5"/>
+        <text x="135" y="888" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#27500A" dominant-baseline="central">Upload HACCP docs</text>
+        <text x="135" y="906" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#3B6D11" dominant-baseline="central">Dashboard · once per day</text>
+
+        <line x1="215" y1="896" x2="250" y2="896" stroke="#3B6D11" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="250" y="870" width="170" height="52" rx="6" fill="#F3FAE8" stroke="#639922" stroke-width="0.5"/>
+        <text x="335" y="888" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#27500A" dominant-baseline="central">Deliver or collect</text>
+        <text x="335" y="906" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#3B6D11" dominant-baseline="central">Retail delivery or Shop pickup</text>
+
+        <line x1="420" y1="896" x2="455" y2="896" stroke="#3B6D11" stroke-width="1.5" marker-end="url(#arr2)"/>
+
+        <rect x="455" y="870" width="168" height="52" rx="6" fill="#F3FAE8" stroke="#639922" stroke-width="0.5"/>
+        <text x="539" y="888" text-anchor="middle" font-family="Inter,sans-serif" font-size="12" font-weight="600" fill="#27500A" dominant-baseline="central">Final Packing Report</text>
+        <text x="539" y="906" text-anchor="middle" font-family="Inter,sans-serif" font-size="11" fill="#3B6D11" dominant-baseline="central">Full HACCP trace available</text>
+
+        <!-- END pill -->
+        <line x1="340" y1="1000" x2="340" y2="980" stroke="#2D6A4F" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <rect x="38" y="1000" width="280" height="14" rx="0" fill="none"/>
+        <line x1="340" y1="1000" x2="340" y2="1000" stroke="none"/>
+
+        <line x1="340" y1="922" x2="340" y2="958" stroke="#2D6A4F" stroke-width="1.5" marker-end="url(#arr2)"/>
+        <rect x="210" y="958" width="260" height="42" rx="21" fill="#2D6A4F" stroke="#2D6A4F" stroke-width="0.5"/>
+        <text x="340" y="979" text-anchor="middle" dominant-baseline="central" font-family="Inter,sans-serif" font-size="14" font-weight="600" fill="#D8F3DC">Order complete — Past Orders</text>
+
+        <!-- Scan callout note -->
+        <rect x="46" y="650" width="96" height="42" rx="6" fill="#FFF8E1" stroke="#F0C040" stroke-width="0.5"/>
+        <text x="94" y="664" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" font-weight="600" fill="#7A5000" dominant-baseline="central">Key step:</text>
+        <text x="94" y="678" text-anchor="middle" font-family="Inter,sans-serif" font-size="10" fill="#7A5000" dominant-baseline="central">AI auto-reads OCR</text>
+        <line x1="142" y1="671" x2="148" y2="671" stroke="#F0C040" stroke-width="0.8" stroke-dasharray="3 2"/>
+
+      </svg>
+    </div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The scan-back step (Phase 4) is where the physical and digital worlds connect. The Epson scanner must be set to <strong>Searchable PDF / OCR mode</strong> — this is what allows the system to read the handwritten form and auto-complete the packing record. Standard scan mode will not work.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('workflow')">← Daily Workflows</button>
+      <button class="nav-btn primary" onclick="show('dashboard')">Module 01: Dashboard →</button>
+    </div>
+  </div>
+
+</div><!-- end #main -->
+
+<script>
+const sections = {
+  home: { section: 'Getting Started', title: 'Overview & Welcome' },
+  nav: { section: 'Getting Started', title: 'Navigation Guide' },
+  workflow: { section: 'Getting Started', title: 'Daily Workflows' },
+  flowcharts: { section: 'Getting Started', title: 'Process Flowcharts' },
+  dashboard: { section: 'Module 01', title: 'Dashboard' },
+  production: { section: 'Module 02', title: 'Production' },
+  pastprod: { section: 'Module 03', title: 'Past Production' },
+  stock: { section: 'Module 04', title: 'Stock on Floor' },
+  sales: { section: 'Module 05', title: 'Sales Orders' },
+  packing: { section: 'Module 06', title: 'Packing Queue' },
+  delivery: { section: 'Module 07', title: 'Delivery Schedule' },
+  supplier: { section: 'Module 08', title: 'Supplier Receipts' },
+  rawmat: { section: 'Module 09', title: 'Raw Materials' },
+  shoppos: { section: 'Module 10', title: 'Shop POS' },
+  'packing-report': { section: 'Module 11', title: 'Final Packing Report' },
+  traceability: { section: 'Module 12', title: 'Traceability' },
+  reports: { section: 'Module 13', title: 'Reports & Analytics' },
+  imports: { section: 'Module 14', title: 'Data Imports' },
+  users: { section: 'Module 15', title: 'User Management' },
+  trouble: { section: 'Support', title: 'Troubleshooting' },
+  rules: { section: 'Reference', title: 'Business Rules' }
+};
+
+function show(id) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+  const sec = document.getElementById('sec-' + id);
+  if (sec) { sec.classList.add('active'); sec.scrollIntoView ? window.scrollTo(0,0) : null; }
+  document.querySelectorAll('.nav-item').forEach(n => {
+    if (n.getAttribute('onclick') && n.getAttribute('onclick').includes("'" + id + "'")) n.classList.add('active');
+  });
+  const meta = sections[id] || {};
+  document.getElementById('tb-section').textContent = meta.section || '';
+  document.getElementById('tb-title').textContent = meta.title || '';
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function filterNav(q) {
+  const items = document.querySelectorAll('.nav-item');
+  q = q.toLowerCase();
+  items.forEach(item => {
+    item.style.display = (!q || item.textContent.toLowerCase().includes(q)) ? '' : 'none';
+  });
+}
+</script>
+</body>
+</html>
