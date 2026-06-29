@@ -607,7 +607,117 @@
   .nav-btn.primary { background: var(--brown-900); border-color: var(--brown-900); color: var(--gold); }
   .nav-btn.primary:hover { background: var(--brown-800); }
 
-  /* ── RESPONSIVE ── */
+  /* ── CHATBOT ── */
+  #chat-btn {
+    position: fixed;
+    bottom: 28px;
+    right: 28px;
+    width: 56px; height: 56px;
+    background: var(--brown-900);
+    border: 2px solid var(--gold);
+    border-radius: 50%;
+    cursor: pointer;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 24px;
+    box-shadow: 0 4px 20px rgba(44,26,14,0.35);
+    z-index: 200;
+    transition: transform 0.2s;
+  }
+  #chat-btn:hover { transform: scale(1.08); }
+
+  #chat-panel {
+    position: fixed;
+    bottom: 96px; right: 28px;
+    width: 360px;
+    max-height: 520px;
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    border-radius: 16px;
+    box-shadow: 0 8px 40px rgba(44,26,14,0.18);
+    display: none;
+    flex-direction: column;
+    z-index: 200;
+    overflow: hidden;
+  }
+  #chat-panel.open { display: flex; }
+
+  #chat-header {
+    background: var(--brown-900);
+    padding: 14px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  #chat-header-icon { font-size: 20px; }
+  #chat-header-text { flex:1; }
+  #chat-header-title { font-size: 13px; font-weight: 700; color: var(--gold); }
+  #chat-header-sub { font-size: 11px; color: rgba(255,255,255,0.5); }
+  #chat-close { background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; font-size: 18px; padding: 0; line-height: 1; }
+  #chat-close:hover { color: var(--white); }
+
+  #chat-messages {
+    flex: 1;
+    overflow-y: auto;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: var(--cream);
+  }
+
+  .chat-msg {
+    max-width: 88%;
+    padding: 9px 13px;
+    border-radius: 12px;
+    font-size: 13px;
+    line-height: 1.55;
+  }
+  .chat-msg.bot {
+    background: var(--white);
+    border: 1px solid var(--brown-200);
+    color: var(--text-dark);
+    align-self: flex-start;
+    border-bottom-left-radius: 4px;
+  }
+  .chat-msg.user {
+    background: var(--brown-900);
+    color: var(--white);
+    align-self: flex-end;
+    border-bottom-right-radius: 4px;
+  }
+  .chat-msg.typing { color: var(--text-muted); font-style: italic; }
+
+  #chat-input-row {
+    display: flex;
+    gap: 8px;
+    padding: 12px 14px;
+    border-top: 1px solid var(--brown-200);
+    background: var(--white);
+  }
+  #chat-input {
+    flex: 1;
+    border: 1px solid var(--brown-200);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    font-family: 'Inter', sans-serif;
+    outline: none;
+    color: var(--text-dark);
+    background: var(--cream);
+  }
+  #chat-input:focus { border-color: var(--gold); }
+  #chat-send {
+    background: var(--brown-900);
+    border: none;
+    border-radius: 8px;
+    color: var(--gold);
+    padding: 8px 14px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background 0.15s;
+  }
+  #chat-send:hover { background: var(--brown-800); }
+  #chat-send:disabled { opacity: 0.4; cursor: not-allowed; }
   @media (max-width: 768px) {
     #sidebar { transform: translateX(-100%); transition: transform 0.3s; }
     #sidebar.open { transform: translateX(0); }
@@ -729,6 +839,11 @@
     <a class="nav-item" onclick="show('packing-report')"><span class="nav-num">11</span> Final Packing Report</a>
     <a class="nav-item" onclick="show('traceability')"><span class="nav-num">12</span> Traceability</a>
     <a class="nav-item" onclick="show('reports')"><span class="nav-num">13</span> Reports & Analytics</a>
+
+    <div class="sidebar-label">Document Guides</div>
+    <a class="nav-item" onclick="show('doc-packing-schedule')"><span class="nav-num">A</span> Packing Schedule PDF</a>
+    <a class="nav-item" onclick="show('doc-final-report')"><span class="nav-num">B</span> Final Packing Report PDF</a>
+    <a class="nav-item" onclick="show('doc-production-slip')"><span class="nav-num">C</span> Production Slip PDF</a>
 
     <div class="sidebar-label">Admin & Data</div>
     <a class="nav-item" onclick="show('imports')"><span class="nav-num">14</span> Data Imports</a>
@@ -1113,42 +1228,62 @@
       <div class="section-eyebrow">Module 05</div>
       <h2>Sales Orders</h2>
       <div class="section-divider"></div>
-      <p>All customer orders live here. You can import from Pastel automatically, create phone orders manually, or enter new sales orders directly.</p>
+      <p>All customer orders live here. You can import from Pastel automatically, create phone orders manually, or enter new sales orders directly. Each order is either Standard or Custom — understanding this difference is essential.</p>
     </div>
 
     <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Sales Orders</strong></div>
 
-    <div class="sub-h">⭐ Method 1: Import Pastel PDF (Recommended – Fastest)</div>
-    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">This is the fastest and most automated method. Use it every day when you receive the Pastel order export file.</p>
+    <div class="sub-h">📌 Standard vs Custom Orders — What's the Difference?</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Every order line — whether entered via Phone Order, New Sales Order, or Pastel import — is classified as either Standard or Custom. This controls how the product dropdowns work.</p>
+    <table class="info-table">
+      <thead><tr><th>Type</th><th>When to Use</th><th>How It Works</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Standard</strong></td><td>The customer wants a pre-defined pack from the standard product range — e.g. a 2.9kg Family Box of Shortbread, or a 1.5kg Bucket of Choc Chip.</td><td>Three cascading dropdowns appear: first select <strong>Flavour</strong>, then <strong>Category</strong> (Box / Packet / Bucket / Tube), then <strong>Pack Type</strong> (the specific size). The system filters each dropdown based on your previous selection so you can only choose valid combinations.</td></tr>
+        <tr><td><strong>Custom</strong></td><td>The customer wants something outside the standard range — a non-standard weight, a special assortment, or a bespoke pack configuration.</td><td>Free-form entry — enter flavour, pack description, quantity and kg manually. No dropdown filtering applies.</td></tr>
+      </tbody>
+    </table>
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Always try Standard first. If the exact pack the customer wants appears in the Flavour → Category → Pack Type cascade, use it — this ensures the correct Pastel item code is linked and the packing schedule generates correctly. Only use Custom if the pack genuinely doesn't exist in the standard range.</div></div>
+
+    <div class="sub-h">⭐ Method 1: Import Pastel PDF (Recommended — Fastest)</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">The fastest and most automated method. Use every day when you receive the Pastel order export.</p>
     <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "↑ Import Pastel PDF" (top right button)</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select and upload the Pastel PDF file from your computer</div><div class="step-desc">Make sure the file uses semicolon (;) as the delimiter. If the import fails, this is the most common cause.</div></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">The AI automatically processes the file</div><div class="step-desc">It reads all orders, creates Sales Orders in the system, calculates what stock is already available, plans any additional production runs needed, and suggests exact quantities to produce.</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Review the results on the next screen</div><div class="step-desc">Check the proposed orders and production plan. Make any edits needed.</div></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Confirm — everything is created automatically</div><div class="step-desc">New orders appear in Sales Orders. Orders with sufficient stock move straight to the Packing Queue. Any required production appears in the Production module.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select and upload the Pastel PDF file</div><div class="step-desc">The file must use a semicolon (;) as the delimiter. If the import fails, this is the most common cause — re-export from Pastel with the correct setting.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">The AI automatically reads and processes the file</div><div class="step-desc">It creates Sales Orders, matches Pastel item codes to Standard pack types, calculates what stock is already available, plans any additional production runs needed, and suggests exact quantities to produce.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Review the results on screen</div><div class="step-desc">Check the proposed orders and production plan. Make edits if needed before confirming.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Confirm — everything is created automatically</div><div class="step-desc">New orders appear in Sales Orders. Orders with sufficient stock move to the Packing Queue. Required production appears in the Production module.</div></div></div>
     </div>
 
     <div class="sub-h">📞 Method 2: Phone Order</div>
-    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Use this for orders received by phone or WhatsApp that aren't coming through Pastel.</p>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">For orders received by phone or WhatsApp that aren't coming through Pastel.</p>
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "Phone Order" button (top left)</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Search for the customer or add a new one</div><div class="step-desc">Type the customer name, account number, or phone number to search existing customers.</div></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "Phone Order" (top left button)</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Search for the customer</div><div class="step-desc">Type the customer name, account number, or phone number. For Shop orders, the phone number is the key matching field — make sure it is entered correctly.</div></div></div>
       <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter Order Date and Delivery Date</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Add Order Lines</div><div class="step-desc">For each line: select Flavour + Pack Size + Quantity. The system calculates the total kg automatically.</div></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Add Notes (optional)</div><div class="step-desc">Delivery instructions, WhatsApp message content, special requests, etc.</div></div></div>
-      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Save the order</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Select Standard or Custom for each order line</div><div class="step-desc">For Standard: select Flavour → Category → Pack Type from the cascading dropdowns. For Custom: enter the details manually.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Enter quantity — kg calculates automatically</div><div class="step-desc">For Standard orders the total kg is calculated from the pack type weight. For Assorted/Mix packs the system auto-populates the five contributing flavours (Shortbread, Ginger, Choc Chip, Coconut, Crunchie) using FIFO stock.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Add Notes if needed</div><div class="step-desc">Delivery instructions, special requests, or WhatsApp message content.</div></div></div>
+      <div class="step"><div class="step-num">7</div><div class="step-body"><div class="step-title">Save the order</div></div></div>
+    </div>
+
+    <div class="sub-h">🗂️ Method 3: New Sales Order</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">For creating a formal order directly in the system — same Standard/Custom logic applies as Phone Order, but used when the order has an invoice number and formal documentation rather than a phone call.</p>
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "+ New Sales Order"</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select customer, enter order date, delivery date, and invoice number</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Add order lines using Standard or Custom selection</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Save</div></div></div>
     </div>
 
     <div class="sub-h">🏪 Retail vs Shop Orders</div>
     <table class="info-table">
-      <thead><tr><th>Order Type</th><th>How It Works</th><th>Badge Colour</th></tr></thead>
+      <thead><tr><th>Order Type</th><th>How It Works</th><th>Badge</th></tr></thead>
       <tbody>
-        <tr><td>Retail <span class="badge badge-blue">Retail</span></td><td>Delivered to the customer. Appears on delivery routes. Standard flow.</td><td>Blue</td></tr>
-        <tr><td>Shop <span class="badge badge-purple">Shop</span></td><td>Collection only — customer picks up at factory. Never added to a delivery route. Status shows "Ready for Collection" when packed.</td><td>Purple</td></tr>
+        <tr><td>Retail</td><td>Delivered to the customer. Appears on the Delivery Schedule. Standard fulfilment flow.</td><td><span class="badge badge-blue">Retail</span></td></tr>
+        <tr><td>Shop</td><td>Collection only — customer picks up at the factory. Never added to a delivery route. Matched via the customer's phone number when the packing report is uploaded. Status becomes "Ready for Collection" when packed.</td><td><span class="badge badge-purple">Shop</span></td></tr>
       </tbody>
     </table>
-
-    <div class="tip-box"><span class="tip-icon">💡</span><div>The Pastel Import saves the most time. Use it every day. If an order isn't in Pastel, use Phone Order to capture it manually so nothing falls through the cracks.</div></div>
+    <div class="warn-box"><span>⚠️</span><div><strong>Shop orders have no invoice number.</strong> The phone number is the matching key — always ensure the customer's phone number is correctly recorded on a Shop order so the system can match the packing upload to the right order.</div></div>
 
     <div class="section-nav">
       <button class="nav-btn" onclick="show('stock')">← Stock on Floor</button>
@@ -1162,41 +1297,67 @@
       <div class="section-eyebrow">Module 06</div>
       <h2>Packing Queue</h2>
       <div class="section-divider"></div>
-      <p>Every order that is ready to be physically packed appears here. This is where the packing team works from each shift.</p>
+      <p>Every order that is ready to be physically packed appears here. This is where the packing team works from each shift. The queue shows real-time stock availability, pre-packed stock indicators, and partial packing status.</p>
     </div>
 
     <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Packing Queue</strong></div>
 
     <div class="sub-h">📋 Understanding the Queue</div>
     <table class="info-table">
-      <thead><tr><th>Indicator</th><th>Meaning</th></tr></thead>
+      <thead><tr><th>Indicator / Badge</th><th>Meaning</th></tr></thead>
       <tbody>
-        <tr><td>Total in Queue</td><td>Total number of orders waiting to be packed (including those without enough stock yet)</td></tr>
-        <tr><td>Ready to Pack</td><td>Orders where all required stock is available on the floor right now — start with these</td></tr>
-        <tr><td>In Queue badge</td><td>Order is waiting — stock is available, packing hasn't started</td></tr>
-        <tr><td>kg shown</td><td>Total weight of that order — gives packers an idea of the workload</td></tr>
+        <tr><td>Total in Queue</td><td>Total number of orders waiting to be packed, including those without enough stock yet</td></tr>
+        <tr><td>Ready to Pack</td><td>Orders where all required stock is currently available on the floor — always start with these</td></tr>
+        <tr><td><span class="badge badge-gold">In Queue</span></td><td>Order is waiting — either stock not yet available, or packing hasn't started</td></tr>
+        <tr><td><span class="badge" style="background:#FEF3C7;color:#92400E;">In Packing</span></td><td>Packing has started but is not yet complete — the order is locked to prevent it being double-scheduled on another packing run</td></tr>
+        <tr><td>Pre-packed indicator</td><td>A coloured visual indicator on the order card showing that some or all stock for this order has already been floor-packed and is ready to allocate. The system will use this FIFO stock first.</td></tr>
+        <tr><td>kg shown on card</td><td>Total weight of the order — gives the packing team an idea of shift workload</td></tr>
       </tbody>
     </table>
 
-    <div class="sub-h">📦 How to Download the Packing Schedule PDF</div>
+    <div class="sub-h">📦 Downloading the Packing Schedule PDF</div>
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "↓ Packing Schedule" button (top of the Packing Queue screen)</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">The PDF downloads automatically</div><div class="step-desc">It shows exactly what needs to be packed and the estimated time required. Print this and give it to the packing supervisor at the start of each shift.</div></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "↓ Packing Schedule" at the top of the Packing Queue screen</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">The PDF generates and downloads automatically</div><div class="step-desc">This is a two-page document. Page 1 is the shift summary. Page 2 is the detailed per-order breakdown showing exactly which production batch each line must come from. Print both pages and hand to the packing supervisor at the start of each shift.</div></div></div>
     </div>
 
-    <div class="sub-h">✅ How to Pack an Order</div>
+    <div class="sub-h">✅ How to Pack an Order (Standard Flow)</div>
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "Pack This Order" on the order card</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Review the packing details screen</div><div class="step-desc">The system shows you packing date, shift, packing number (auto-generated in format PACK[ddmmyy]-01, -02, etc.), and the supervisor and packer fields to fill in.</div></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Confirm batch allocation</div><div class="step-desc">The system auto-selects batches using FIFO (oldest stock first). You can add multiple batches if an order requires stock from more than one baking batch. For mixed packs (buckets): select flavours manually or use FIFO auto-select.</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Complete QA checks on the form</div><div class="step-desc">Tick all quality check items as required by your HACCP procedure.</div></div></div>
-      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Save / Complete the packing</div><div class="step-desc">The order moves to the Delivery Queue automatically. Stock on Floor is reduced accordingly.</div></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Click "Pack This Order" on the order card</div><div class="step-desc">The order status immediately changes to "In Packing" — this prevents anyone else from scheduling the same order simultaneously.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Review the packing details screen</div><div class="step-desc">The system shows the auto-generated Packing Batch Number (format: PACK[ddmmyy]-01), packing date, shift, and supervisor/packer fields.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Confirm batch allocation</div><div class="step-desc">The system auto-selects production batches using FIFO — oldest stock first. If pre-packed floor stock exists for this order, it is allocated first before drawing from bulk production batches. For mixed/assorted packs (buckets), the system distributes across the five flavours automatically.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Complete QA checks</div><div class="step-desc">Tick all six quality check items: Colour Good, Taste Good, Label Correct, Texture Good, Weight Correct, Seal Integrity Correct.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Save / Complete</div><div class="step-desc">Stock on Floor is reduced immediately. The order moves to the Delivery Schedule (Retail) or shows "Ready for Collection" (Shop).</div></div></div>
     </div>
 
-    <div class="warn-box"><span>⚠️</span><div><strong>Do not upload HACCP documents here.</strong> HACCP documents are uploaded in bulk at the end of the day via the Dashboard. One upload covers all packed orders for that day.</div></div>
+    <div class="sub-h">🔄 Partial and Split Packing</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">If an order is too large to complete in one shift, or if stock runs short mid-pack, you can pack it in stages across multiple shifts or days.</p>
+    <table class="info-table">
+      <thead><tr><th>Concept</th><th>How It Works</th></tr></thead>
+      <tbody>
+        <tr><td>Partial quantity selection</td><td>On the packing screen, you can select fewer units than the full order quantity for each line — e.g. pack 30 of the 50 required boxes now.</td></tr>
+        <tr><td>In Packing status</td><td>Once any packing starts on an order, it shows "In Packing" — it will not appear as a fresh order on the next packing schedule. This prevents double-counting.</td></tr>
+        <tr><td>Packed / Remaining balance</td><td>The order card updates to show cumulative totals: how many units have been packed across all shifts so far, and how many remain outstanding.</td></tr>
+        <tr><td>Carry-over to next shift</td><td>The outstanding quantity automatically carries over. When enough stock is available for the remaining units, the order becomes ready to pack again.</td></tr>
+        <tr><td>Assorted/Mix lines</td><td>Assorted lines are always treated as a single atomic unit — you cannot partially pack just one flavour within an Assorted line. The entire assorted allocation for that partial quantity is packed together.</td></tr>
+      </tbody>
+    </table>
+    <div class="tip-box"><span class="tip-icon">💡</span><div>Always complete the physical packing before saving in the system. The system records what you enter as packed — if you save a quantity that wasn't actually packed, the stock figures will be wrong.</div></div>
 
-    <div class="sub-h">🔄 Split / Partial Packing</div>
-    <p style="color:var(--text-mid); font-size:14px;">If an order is too large to pack in one shift, you can pack it across multiple shifts or days. The system tracks carry-over quantities and shows how much of the order has been packed and how much remains.</p>
+    <div class="sub-h">📦 Pre-Packed Floor Stock</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Pre-packed stock is biscuits that the packing team has already packed into boxes, buckets, or packets before a specific customer order was assigned — for example, during a quiet period to get ahead of demand.</p>
+    <table class="info-table">
+      <thead><tr><th>Aspect</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Where it's recorded</td><td>Pre-packed stock is recorded in the Pre-Packed Stock module (accessible from the Packing Queue). Staff enter the flavour, pack type, quantity packed, and which production batch was used.</td></tr>
+        <tr><td>How it appears on order cards</td><td>If pre-packed stock is available for a flavour/pack type an order needs, the order card shows a visual indicator. This tells the packing team that ready stock exists and doesn't need to be packed from scratch.</td></tr>
+        <tr><td>FIFO allocation</td><td>When the packing schedule is created, pre-packed stock is allocated to orders automatically in FIFO order — oldest pre-packed stock is used first.</td></tr>
+        <tr><td>Packing schedule notation</td><td>On the Packing Schedule PDF, a line that uses pre-packed stock shows: "PRE-PACKED [X units] from Batch PACK… — PACK [Y units] still required". Only pack the remaining Y units physically — the X units are already done.</td></tr>
+        <tr><td>Traceability</td><td>Pre-packed stock retains full traceability to the original production batch and raw ingredients, exactly as if it had been packed directly against the order.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box"><span>⚠️</span><div><strong>HACCP documents are not uploaded here.</strong> Upload them once at end of day via the Dashboard. One upload links to all orders packed on that day.</div></div>
 
     <div class="section-nav">
       <button class="nav-btn" onclick="show('sales')">← Sales Orders</button>
@@ -1210,20 +1371,34 @@
       <div class="section-eyebrow">Module 07</div>
       <h2>Delivery Schedule</h2>
       <div class="section-divider"></div>
-      <p>Once orders are packed, they appear here ready for dispatch. This is the driver's daily work list.</p>
+      <p>Once orders are packed, they appear here ready for dispatch. Retail orders go to delivery; Shop orders go to collection. This is the driver's daily work list.</p>
     </div>
 
     <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Delivery Schedule</strong></div>
 
     <div class="sub-h">🚛 How Delivery Works</div>
     <div class="steps">
-      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">All packed Retail orders automatically appear in the Delivery Schedule</div><div class="step-desc">Shop (collection) orders do not appear here — they show "Ready for Collection" status instead.</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Orders are sorted by delivery date</div><div class="step-desc">Urgent (due today or overdue) appear at the top.</div></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">The driver loads the vehicle and marks orders as Delivered</div><div class="step-desc">Once marked delivered, orders move to Past Orders and the Delivery Queue empties.</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">When all deliveries are complete the screen shows "All Delivered!"</div></div></div>
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">All packed Retail orders appear here automatically</div><div class="step-desc">Shop (collection) orders do not appear in the Delivery Schedule — they show "Ready for Collection" status on the Sales Orders screen instead.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Orders are sorted oldest-first by required delivery date</div><div class="step-desc">Orders overdue or due today appear at the top. Always dispatch the oldest-dated orders first.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Driver loads the vehicle and departs</div><div class="step-desc">The driver works through the delivery list in order. Each stop's customer name, address, and order details are shown.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Mark each order as Delivered once dropped off</div><div class="step-desc">As orders are marked Delivered they move to Past Orders and are removed from the active Delivery Schedule.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">"All Delivered!" confirms the queue is clear</div><div class="step-desc">When all deliveries are complete the screen shows the "All Delivered!" message. The day's delivery run is done.</div></div></div>
     </div>
 
-    <div class="tip-box"><span class="tip-icon">💡</span><div>Shop orders are always collection-only. Never add a Shop order to a delivery route or mark it as "Delivered." It should be marked "Ready for Collection" and the customer comes to the factory to collect.</div></div>
+    <div class="sub-h">🏪 Shop Orders — Collection Flow</div>
+    <table class="info-table">
+      <thead><tr><th>Step</th><th>What Happens</th></tr></thead>
+      <tbody>
+        <tr><td>Order placed</td><td>Shop order created in Sales Orders — always linked to the customer's phone number</td></tr>
+        <tr><td>Packing complete</td><td>When the packing upload is scanned in, the system matches the order via phone number and automatically sets status to "Ready for Collection"</td></tr>
+        <tr><td>Customer arrives</td><td>Staff check Sales Orders — find the order showing "Ready for Collection" — hand over the goods</td></tr>
+        <tr><td>Mark collected</td><td>Update the order status to Collected/Delivered to close it out and move it to Past Orders</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box"><span>⚠️</span><div><strong>Never add a Shop order to a delivery route.</strong> Shop orders are always collection-only. If a Shop order appears on the Delivery Schedule in error, check the order type — it may have been entered as Retail by mistake. Contact Admin to correct it.</div></div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>If the Delivery Schedule seems to be missing an order that should be there, check the Packing Queue first — the order may still be "In Packing" status, which means packing hasn't been fully confirmed yet.</div></div>
 
     <div class="section-nav">
       <button class="nav-btn" onclick="show('packing')">← Packing Queue</button>
@@ -1316,20 +1491,43 @@
       <div class="section-eyebrow">Module 10</div>
       <h2>Shop POS</h2>
       <div class="section-divider"></div>
-      <p>Point of Sale for walk-in customers at the factory shop. All sales here are recorded against stock and appear in sales reports.</p>
+      <p>Point of Sale for walk-in customers at the factory shop. All sales are recorded in real time against stock and appear in Reports. This is separate from Shop-type Sales Orders — the POS is for customers who walk in and buy on the spot, with no prior order.</p>
     </div>
 
     <div class="where-to-go"><span>📍</span> Left sidebar → <strong>Shop POS</strong></div>
 
-    <div class="sub-h">🛍️ Processing a Shop Sale</div>
+    <div class="sub-h">🛍️ Processing a Walk-In Sale</div>
     <div class="steps">
       <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Open Shop POS from the sidebar</div></div></div>
-      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select the products the customer wants</div><div class="step-desc">Choose flavour and pack size. The system shows current availability.</div></div></div>
-      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Enter quantities and confirm the sale</div></div></div>
-      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Stock is deducted automatically</div><div class="step-desc">The sale appears in Reports and the stock level on Stock on Floor updates immediately.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Select the flavour the customer wants</div><div class="step-desc">Flavours available are those with current stock on the floor. Out-of-stock flavours are not selectable.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Select the pack size</div><div class="step-desc">Available pack types for the selected flavour are shown — choose what the customer wants.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Enter the quantity</div><div class="step-desc">The total price and kg calculate automatically.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Add more lines if the customer is buying multiple products</div><div class="step-desc">Repeat steps 2–4 for each additional flavour or pack type.</div></div></div>
+      <div class="step"><div class="step-num">6</div><div class="step-body"><div class="step-title">Confirm and complete the sale</div><div class="step-desc">Stock on Floor is deducted immediately. The sale is recorded in Reports under Shop POS sales.</div></div></div>
     </div>
 
-    <div class="tip-box"><span class="tip-icon">💡</span><div>Shop POS sales are always collection — the customer is present. Do not confuse with Shop-type Sales Orders (which are pre-orders placed and then collected later).</div></div>
+    <div class="sub-h">📊 What Gets Recorded</div>
+    <table class="info-table">
+      <thead><tr><th>Data Recorded</th><th>Where It Appears</th></tr></thead>
+      <tbody>
+        <tr><td>Flavour, pack type, quantity, kg, price</td><td>Reports → Sales tab (shown separately from delivery orders)</td></tr>
+        <tr><td>Stock deduction</td><td>Stock on Floor updates immediately — the Dashboard summary reflects the change</td></tr>
+        <tr><td>Date and time</td><td>Automatically recorded against the sale for reporting</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">⚠️ Shop POS vs Shop Sales Orders — Know the Difference</div>
+    <table class="info-table">
+      <thead><tr><th>Shop POS</th><th>Shop Sales Order</th></tr></thead>
+      <tbody>
+        <tr><td>Walk-in customer — buys on the spot, no prior order</td><td>Customer phoned ahead — order captured in Sales Orders, packed, then collected later</td></tr>
+        <tr><td>Payment happens immediately at the counter</td><td>Order may be on account — collected when "Ready for Collection"</td></tr>
+        <tr><td>No packing schedule generated — stock already packed</td><td>Goes through full Packing Queue → packing → collection flow</td></tr>
+        <tr><td>Appears in Reports as a POS sale</td><td>Appears in Sales Orders and has a full Final Packing Report</td></tr>
+      </tbody>
+    </table>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>If a walk-in customer wants a flavour that shows as OUT on the Dashboard, check Stock on Floor — there may be bulk unpacked biscuits that can be quickly packed for them. If there is bulk stock, pack it first, then process the sale through POS.</div></div>
 
     <div class="section-nav">
       <button class="nav-btn" onclick="show('rawmat')">← Raw Materials</button>
@@ -1940,6 +2138,310 @@
     </div>
   </div>
 
+  <!-- ══════════════ DOC A: PACKING SCHEDULE ══════════════ -->
+  <div id="sec-doc-packing-schedule" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Document Guide A</div>
+      <h2>Packing Schedule PDF</h2>
+      <div class="section-divider"></div>
+      <p>The Packing Schedule is printed at the start of every packing shift and handed to the packing team. It tells them exactly what to pack, from which batches, and has signature and sign-off sections that must be completed before scanning back into the system.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Generated from: <strong>Packing Queue → ↓ Packing Schedule button</strong></div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The Packing Schedule is a two-page document. Page 1 is the shift summary. Page 2 is the detailed per-order breakdown. Both pages must be kept together, completed, and scanned back in as a single PDF at the end of the shift.</div></div>
+
+    <div class="sub-h">📄 Page 1 — Shift Summary</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:16px;">The top of Page 1 shows the overall shift snapshot in four large boxes:</p>
+
+    <table class="info-table">
+      <thead><tr><th>Field</th><th>What It Shows</th><th>Example</th></tr></thead>
+      <tbody>
+        <tr><td>Total Orders</td><td>Number of customer orders to be packed this shift</td><td>1</td></tr>
+        <tr><td>Total KG to Pack</td><td>Combined weight of all products to be packed</td><td>460.00 kg</td></tr>
+        <tr><td>Total Pack Units</td><td>Total number of individual boxes/buckets/packets to be packed</td><td>90</td></tr>
+        <tr><td>Est. Packing Time</td><td>System-estimated time to complete all packing for this shift</td><td>0.5 hrs</td></tr>
+      </tbody>
+    </table>
+
+    <p style="color:var(--text-mid); font-size:14px; margin: 16px 0 8px;">Below the summary boxes is the <strong>Packing Summary table</strong> — one row per order:</p>
+
+    <table class="info-table">
+      <thead><tr><th>Column</th><th>What It Shows / What to Do</th></tr></thead>
+      <tbody>
+        <tr><td>Invoice #</td><td>The order's unique reference number — matches what's in the system</td></tr>
+        <tr><td>Customer Name</td><td>Who the order is for</td></tr>
+        <tr><td>Total KG</td><td>Total weight of this specific order</td></tr>
+        <tr><td>Lines</td><td>How many different product lines are in the order</td></tr>
+        <tr><td>Status</td><td>Should read "In Packing" once packing has started</td></tr>
+        <tr><td>Shift Supervisor (Print)</td><td>Shift supervisor prints their name here</td></tr>
+        <tr><td>Shift Supervisor Signature</td><td>Shift supervisor signs here once order is complete</td></tr>
+        <tr><td>Packing Supervisor</td><td>Packing supervisor prints their name here</td></tr>
+        <tr><td>Packing Supervisor (Done)</td><td>Packing supervisor signs here to confirm order is done</td></tr>
+        <tr><td>Done ☐</td><td>Tick this box when the order is fully packed and verified</td></tr>
+      </tbody>
+    </table>
+
+    <p style="color:var(--text-mid); font-size:14px; margin: 16px 0 8px;">At the very bottom of Page 1 are three signature lines that must be completed before scanning:</p>
+
+    <table class="info-table">
+      <thead><tr><th>Signature Line</th><th>Who Signs</th><th>When</th></tr></thead>
+      <tbody>
+        <tr><td>Jo-Ann — Shift Supervisor Signature & Date</td><td>The shift supervisor on duty (e.g. Jo-Ann De Klerk)</td><td>End of shift, once all orders are packed</td></tr>
+        <tr><td>Bernie — Packing Supervisor Signature & Date</td><td>The packing supervisor (e.g. Bernie, Denise, or Caroline)</td><td>End of shift, once all orders are packed</td></tr>
+        <tr><td>QA Manager Signature & Date</td><td>Nico Oosthuizen (QA Manager)</td><td>End of shift sign-off</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📄 Page 2 — Detailed Order Breakdown</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:16px;">Page 2 has a separate section for each customer order. Each section shows:</p>
+
+    <table class="info-table">
+      <thead><tr><th>Field / Column</th><th>What It Means</th></tr></thead>
+      <tbody>
+        <tr><td>Customer name & line count</td><td>Customer name and how many product lines are in their order</td></tr>
+        <tr><td>Invoice #</td><td>Order reference number</td></tr>
+        <tr><td>Code</td><td>Customer account code (e.g. S60 for Spar Distribution Centre)</td></tr>
+        <tr><td>Order Date</td><td>When the order was placed</td></tr>
+        <tr><td>Delivery Date</td><td>When it needs to be delivered or collected</td></tr>
+        <tr><td>Flavour</td><td>Which biscuit flavour this line refers to</td></tr>
+        <tr><td>Pack Type / Description</td><td>The pack size and type (e.g. 1.5kg Bucket, 500g Box). Also shows if any pre-packed stock is being used — e.g. "PRE-PACKED [20 units] from Batch PACK260626-01 — PACK [30 units] still required"</td></tr>
+        <tr><td>Qty</td><td>Number of units to pack for this line</td></tr>
+        <tr><td>Total KG</td><td>Weight in kg for this line</td></tr>
+        <tr><td>From Production Batch</td><td>Which baking batch the stock must come from (FIFO — oldest first). e.g. CC010626-01</td></tr>
+        <tr><td>Time Completed</td><td>Packer writes the time they finished this line</td></tr>
+        <tr><td>Done ☐</td><td>Tick when this specific line is packed and verified</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">✅ Product Release Verification Section</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Below the order lines is a checklist of 6 quality checks. All must be ticked before signing off:</p>
+
+    <div style="display:grid; grid-template-columns: 1fr 1fr 1fr; gap:8px; margin:12px 0 20px;">
+      <div style="background:var(--green-bg); border:1px solid #95D5A8; border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--green-ok);">☑ Colour good</div>
+      <div style="background:var(--green-bg); border:1px solid #95D5A8; border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--green-ok);">☑ Taste good</div>
+      <div style="background:var(--green-bg); border:1px solid #95D5A8; border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--green-ok);">☑ Label correct</div>
+      <div style="background:var(--green-bg); border:1px solid #95D5A8; border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--green-ok);">☑ Texture good</div>
+      <div style="background:var(--green-bg); border:1px solid #95D5A8; border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--green-ok);">☑ Weight correct</div>
+      <div style="background:var(--green-bg); border:1px solid #95D5A8; border-radius:8px; padding:10px 14px; font-size:13px; font-weight:600; color:var(--green-ok);">☑ Seal integrity correct</div>
+    </div>
+
+    <div class="sub-h">✍️ Order Sign-Off Section</div>
+    <table class="info-table">
+      <thead><tr><th>Person</th><th>What They Fill In</th></tr></thead>
+      <tbody>
+        <tr><td>Shift Supervisor (e.g. Jo-Ann)</td><td>Prints name · Signs · Writes time started · Writes time completed</td></tr>
+        <tr><td>Packing Supervisor (e.g. Bernie)</td><td>Prints name · Signs · Writes time started · Writes time completed</td></tr>
+        <tr><td>Packer 1 (e.g. Adams, Ruzetta)</td><td>Signs to confirm they packed this order</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📷 Scanning the Completed Schedule Back In</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">At the very bottom of Page 2 is the instruction:</p>
+    <div style="background:var(--brown-50); border:1px solid var(--brown-200); border-radius:8px; padding:14px 18px; margin-bottom:16px; font-style:italic; font-size:13.5px; color:var(--text-mid);">
+      "Scan / Complete Packing: Once all orders are packed &amp; signed, scan this sheet back into the system to confirm completion."
+    </div>
+
+    <div class="steps">
+      <div class="step"><div class="step-num">1</div><div class="step-body"><div class="step-title">Ensure ALL signature lines and tick boxes are completed</div><div class="step-desc">Every Done checkbox ticked, all three signature lines signed on Page 1, all order sign-offs completed on Page 2. Do not scan an incomplete form.</div></div></div>
+      <div class="step"><div class="step-num">2</div><div class="step-body"><div class="step-title">Place both pages on the Epson scanner</div><div class="step-desc">Keep pages in order — Page 1 first, Page 2 second. Scan as a single multi-page PDF.</div></div></div>
+      <div class="step"><div class="step-num">3</div><div class="step-body"><div class="step-title">Scanner must be in Searchable PDF / OCR mode</div><div class="step-desc">This is critical. Standard scan mode produces an image only — the system cannot read it. OCR mode produces a text layer that the system reads automatically. If unsure, check the scanner settings before scanning.</div></div></div>
+      <div class="step"><div class="step-num">4</div><div class="step-body"><div class="step-title">Upload the scanned PDF to the Packing Queue</div><div class="step-desc">Go to Packing Queue → find the relevant order → upload the scanned PDF. The system reads the OCR text layer, extracts the packing batch number, date, supervisor names, and QA checks, and automatically marks the order as packed and complete.</div></div></div>
+      <div class="step"><div class="step-num">5</div><div class="step-body"><div class="step-title">Verify the order moved to the Delivery Schedule</div><div class="step-desc">Once processed successfully the order disappears from the Packing Queue and appears in the Delivery Schedule. If it stays in the Packing Queue, the scan may not have been read correctly — check the scanner was in OCR mode and try again.</div></div></div>
+    </div>
+
+    <div class="warn-box"><span>⚠️</span><div><strong>Pre-packed stock notation:</strong> If a line shows "PRE-PACKED [X units] from Batch PACK…" this means that many units were already floor-packed before the order was assigned. The system has allocated that pre-packed stock to this line automatically. You only need to physically pack the remaining units shown as "PACK [Y units] still required."</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('reports')">← Reports & Analytics</button>
+      <button class="nav-btn primary" onclick="show('doc-final-report')">Document Guide B: Final Packing Report →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DOC B: FINAL PACKING REPORT ══════════════ -->
+  <div id="sec-doc-final-report" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Document Guide B</div>
+      <h2>Final Packing Report PDF</h2>
+      <div class="section-divider"></div>
+      <p>The Final Packing Report is the official HACCP traceability document for every order. It is a 3-page PDF generated by the system and contains the complete history of an order from raw ingredients through to delivery. It is used for audits, customer queries, food safety compliance, and product recalls.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Generated from: <strong>Left sidebar → Final Packing Report → search for the order → view/print</strong></div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div>The header of every page shows: Crunch 'n Munch Biscuit Co. logo, the Order number, Customer name, Delivery date, Status, and the print date/time. The footer shows the page number out of 3. Always check you have all 3 pages when printing for an audit.</div></div>
+
+    <div class="sub-h">📄 Section 1 — Sales Order Information</div>
+    <table class="info-table">
+      <thead><tr><th>Field</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Invoice / Order Number</td><td>The unique order reference (e.g. 6a3e2a17). Use this to search for the order in the system.</td></tr>
+        <tr><td>Customer Name</td><td>Full customer name (e.g. Spar Distribution Centre)</td></tr>
+        <tr><td>Customer Account Code</td><td>Pastel account code (e.g. S60)</td></tr>
+        <tr><td>Order Date</td><td>Date the order was placed in the system</td></tr>
+        <tr><td>Delivery Date Requested</td><td>When the customer needs it — may show "Earliest Convenience" for urgent orders</td></tr>
+        <tr><td>Order Status</td><td>Current status — e.g. Delivered, In Packing, In Queue</td></tr>
+        <tr><td>Notes</td><td>Any special notes on the order — e.g. "[Phone Order]" indicates it was captured manually</td></tr>
+      </tbody>
+    </table>
+
+    <p style="color:var(--text-mid); font-size:14px; margin:16px 0 8px;">Below the order details is the <strong>Order Lines table</strong>:</p>
+    <table class="info-table">
+      <thead><tr><th>Column</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Product / Flavour</td><td>The biscuit flavour (e.g. Choc Chip, Shortbread)</td></tr>
+        <tr><td>Pack Type</td><td>The specific pack size and type (e.g. CC1.5 — 1.5kg Bucket, SB5 — 500g Box)</td></tr>
+        <tr><td>Qty (units)</td><td>Number of units packed for this line</td></tr>
+        <tr><td>Total kg</td><td>Weight of this line (Qty × pack weight)</td></tr>
+        <tr><td>Batch Allocated</td><td>Which baking batch the stock came from (e.g. CC010626-01). Critical for traceability.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📄 Section 2 — Raw Ingredients & Supplier Receipts</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">This section lists every raw ingredient used in the baking batches that made up this order. For each ingredient:</p>
+    <table class="info-table">
+      <thead><tr><th>Column</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Ingredient</td><td>Name of the raw ingredient (e.g. WHITE BREAD FLOUR, BROWN SUGAR)</td></tr>
+        <tr><td>Supplier Batch #</td><td>The lot number from the supplier's packaging (e.g. GH17/322-342). This is the key traceability link back to the supplier.</td></tr>
+        <tr><td>Supplier</td><td>Which company supplied this ingredient (e.g. RELIANZ FOODS, Cabfoods, WESTERN CAPE MILLING SA)</td></tr>
+        <tr><td>Receipt Date</td><td>When this ingredient was received at the factory</td></tr>
+        <tr><td>Expiry Date</td><td>The ingredient's expiry date as stated on supplier packaging</td></tr>
+        <tr><td>Received By</td><td>Name of the staff member who received and recorded this ingredient (e.g. Rodney)</td></tr>
+      </tbody>
+    </table>
+    <div class="tip-box"><span class="tip-icon">💡</span><div>If the same ingredient appears twice (e.g. White Bread Flour appears with two different lot numbers), it means two different deliveries of that ingredient were used across the baking batches. Both are listed for complete traceability.</div></div>
+
+    <div class="sub-h">📄 Section 3 — Production Runs</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">One block per baking batch used in this order. Each block shows:</p>
+    <table class="info-table">
+      <thead><tr><th>Field</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Batch number & flavour</td><td>e.g. CC010626-01 | Choc Chip</td></tr>
+        <tr><td>Batches × kg = total</td><td>e.g. 5 × 101.08 kg = 505.40 kg — number of baking batches, weight per batch, and total kg produced</td></tr>
+        <tr><td>QA status</td><td>QA Passed or QA Failed</td></tr>
+        <tr><td>Production Date</td><td>When this batch was baked</td></tr>
+        <tr><td>Production Supervisor</td><td>Who oversaw the baking (e.g. Clemmy, Jonathan)</td></tr>
+        <tr><td>QA Notes</td><td>Any quality observations noted during production</td></tr>
+        <tr><td>Supplier Batch Numbers</td><td>List of every ingredient lot number used in this specific baking batch</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📄 Section 4 — Packing Information</div>
+    <table class="info-table">
+      <thead><tr><th>Field</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Packing Batch Number</td><td>e.g. PACK260626-01 — the unique packing reference. Format: PACK + date (DDMMYY) + sequence number.</td></tr>
+        <tr><td>Packing Date</td><td>The date the physical packing took place</td></tr>
+        <tr><td>Shift</td><td>01 – Day Shift or 02 – Night Shift</td></tr>
+        <tr><td>Day Shift Supervisor</td><td>The shift supervisor on duty during packing (e.g. Lilly, Jo-Ann)</td></tr>
+        <tr><td>Packing Supervisor</td><td>The packing supervisor (e.g. Bernie, Denise, Caroline)</td></tr>
+        <tr><td>Packer 1, Packer 2</td><td>Named packers who physically packed this order</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📄 Section 5 — Product Release Verification</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Confirms the 6 quality checks were completed and by whom:</p>
+    <table class="info-table">
+      <thead><tr><th>Field</th><th>Detail</th></tr></thead>
+      <tbody>
+        <tr><td>Checks confirmed</td><td>Colour Good · Taste Good · Label Correct · Texture Good · Weight Correct · Seal Integrity Correct</td></tr>
+        <tr><td>Verified by Packer 1</td><td>Named packer who verified quality (e.g. Adams, Ruzanne)</td></tr>
+        <tr><td>Verified by Packer 2</td><td>Named packer who co-verified quality (e.g. Adams, Ruzetta)</td></tr>
+        <tr><td>Packing Notes</td><td>Any notes from the packing team — shows "—" if none</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">📄 Section 6 — HACCP & Traceability Documents</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">Shows whether the end-of-day HACCP document has been linked to this order.</p>
+    <table class="info-table">
+      <thead><tr><th>What You See</th><th>What It Means</th></tr></thead>
+      <tbody>
+        <tr><td>"No HACCP documents uploaded for this order"</td><td>The end-of-day HACCP upload was not done for the packing date, or was uploaded on the wrong date. Go to Dashboard → HACCP Document Upload, select the correct date, and upload the scanned form.</td></tr>
+        <tr><td>Document link shown</td><td>The HACCP food safety document is correctly linked. The order is fully compliant.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="sub-h">✍️ Signature Blocks (Bottom of Page 3)</div>
+    <table class="info-table">
+      <thead><tr><th>Block</th><th>Who Signs</th></tr></thead>
+      <tbody>
+        <tr><td>Packing Supervisor</td><td>e.g. Bernie — signs and dates on the day of packing</td></tr>
+        <tr><td>Day Shift Supervisor</td><td>e.g. Lilly or Jo-Ann — signs and dates on the day of packing</td></tr>
+        <tr><td>QA Sign-Off</td><td>Nico Oosthuizen — QA Manager sign-off confirming the order meets HACCP standards</td></tr>
+      </tbody>
+    </table>
+
+    <div class="warn-box"><span>⚠️</span><div>If a Final Packing Report is requested for an audit or by a customer and Section 6 shows no HACCP document, this is a compliance gap. Rectify immediately by uploading the correct HACCP document for that date via the Dashboard before sharing the report.</div></div>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('doc-packing-schedule')">← Packing Schedule PDF</button>
+      <button class="nav-btn primary" onclick="show('doc-production-slip')">Document Guide C: Production Slip →</button>
+    </div>
+  </div>
+
+  <!-- ══════════════ DOC C: PRODUCTION SLIP ══════════════ -->
+  <div id="sec-doc-production-slip" class="section">
+    <div class="section-header">
+      <div class="section-eyebrow">Document Guide C</div>
+      <h2>Production Slip PDF</h2>
+      <div class="section-divider"></div>
+      <p>The Production Slip is a concise per-customer order summary showing exactly what flavours and pack types need to be produced and packed to fulfil that customer's order. It is used by the production and packing teams as a quick reference for what a specific customer needs.</p>
+    </div>
+
+    <div class="where-to-go"><span>📍</span> Generated from: <strong>Sales Orders → select an order → Production Slip</strong></div>
+
+    <div class="sub-h">📄 What's on the Production Slip</div>
+    <p style="color:var(--text-mid); font-size:14px; margin-bottom:12px;">The slip header shows:</p>
+    <table class="info-table">
+      <thead><tr><th>Field</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Company name</td><td>Crunch 'n Munch Production Slip</td></tr>
+        <tr><td>Customer name</td><td>e.g. Kekkel & Kraai - Krftn</td></tr>
+        <tr><td>Account code</td><td>e.g. Acc: K55</td></tr>
+        <tr><td>Delivery</td><td>e.g. "Earliest Convenience" or a specific date</td></tr>
+      </tbody>
+    </table>
+
+    <p style="color:var(--text-mid); font-size:14px; margin:16px 0 8px;">The main table lists every product line in the order:</p>
+    <table class="info-table">
+      <thead><tr><th>Column</th><th>What It Shows</th></tr></thead>
+      <tbody>
+        <tr><td>Flavour</td><td>The biscuit flavour for this line (e.g. Assorted, Shortbread, Ginger, Choc Chip, Coconut, Crunchie, Choc Crunch)</td></tr>
+        <tr><td>Pack Type</td><td>The specific pack size and format (e.g. 1.5kg Bucket, 250g Box, 500g Box, 400g Box)</td></tr>
+        <tr><td>Qty</td><td>Number of units ordered for this line</td></tr>
+        <tr><td>KG</td><td>Total weight in kg for this line (Qty × pack weight)</td></tr>
+      </tbody>
+    </table>
+
+    <p style="color:var(--text-mid); font-size:14px; margin:16px 0 8px;">At the bottom: <strong>TOTAL: X kg</strong> — the combined weight of the entire order.</p>
+
+    <div class="sub-h">📌 Key Things to Know About the Production Slip</div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div><strong>Assorted lines:</strong> When you see "Assorted" as a flavour on a Production Slip, this means the customer wants a mix of flavours in that pack. The system automatically distributes the kg across Shortbread, Ginger, Choc Chip, Coconut, and Crunchie. Never bake a separate "Assorted" batch — just ensure all five contributing flavours have enough stock.</div></div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div><strong>Multiple lines of the same pack type:</strong> A customer may order the same pack size in multiple flavours — e.g. six separate lines of 250g Box (one per flavour). Each line is packed and tracked separately even though the pack type is the same.</div></div>
+
+    <div class="tip-box"><span class="tip-icon">💡</span><div><strong>Choc Crunch appears separately:</strong> Choc Crunch is always listed as its own line and never forms part of an Assorted mix. It uses a different box type (400g Box) and a unique product code.</div></div>
+
+    <div class="sub-h">🔄 How the Production Slip Relates to the Packing Schedule</div>
+    <p style="color:var(--text-mid); font-size:14px;">The Production Slip is a quick customer-level summary. The Packing Schedule (Document A) is the shift-level document that tells the packing team exactly which production batches to use and requires sign-offs. Both documents come from the same underlying sales order — the Production Slip is for reference, the Packing Schedule is for action.</p>
+
+    <table class="info-table" style="margin-top:16px;">
+      <thead><tr><th>Document</th><th>Purpose</th><th>Used By</th></tr></thead>
+      <tbody>
+        <tr><td>Production Slip</td><td>Quick reference — what does this customer need?</td><td>Production team, packing team for reference</td></tr>
+        <tr><td>Packing Schedule</td><td>Official shift document — what to pack, from which batch, with sign-offs</td><td>Packing supervisor, shift supervisor, QA Manager</td></tr>
+        <tr><td>Final Packing Report</td><td>Official HACCP compliance record — full traceability after packing is complete</td><td>QA, management, auditors, customers</td></tr>
+      </tbody>
+    </table>
+
+    <div class="section-nav">
+      <button class="nav-btn" onclick="show('doc-final-report')">← Final Packing Report PDF</button>
+      <button class="nav-btn primary" onclick="show('trouble')">Troubleshooting →</button>
+    </div>
+  </div>
+
 </div><!-- end #main -->
 
 <script>
@@ -1964,7 +2466,10 @@ const sections = {
   imports: { section: 'Module 14', title: 'Data Imports' },
   users: { section: 'Module 15', title: 'User Management' },
   trouble: { section: 'Support', title: 'Troubleshooting' },
-  rules: { section: 'Reference', title: 'Business Rules' }
+  rules: { section: 'Reference', title: 'Business Rules' },
+  'doc-packing-schedule': { section: 'Document Guide A', title: 'Packing Schedule PDF' },
+  'doc-final-report': { section: 'Document Guide B', title: 'Final Packing Report PDF' },
+  'doc-production-slip': { section: 'Document Guide C', title: 'Production Slip PDF' }
 };
 
 function show(id) {
@@ -1989,5 +2494,120 @@ function filterNav(q) {
   });
 }
 </script>
+<!-- ── CHATBOT ── -->
+<button id="chat-btn" onclick="toggleChat()" title="Ask a question">🍪</button>
+
+<div id="chat-panel">
+  <div id="chat-header">
+    <div id="chat-header-icon">🍪</div>
+    <div id="chat-header-text">
+      <div id="chat-header-title">Thembisa Hub Assistant</div>
+      <div id="chat-header-sub">Ask me anything about the system</div>
+    </div>
+    <button id="chat-close" onclick="toggleChat()">✕</button>
+  </div>
+  <div id="chat-messages">
+    <div class="chat-msg bot">Hi! I'm your Thembisa Hub guide assistant. Ask me anything about how to use the system — packing, production, orders, scanning, reports, anything at all.</div>
+  </div>
+  <div id="chat-input-row">
+    <input id="chat-input" type="text" placeholder="Ask a question…" onkeydown="if(event.key==='Enter')sendChat()">
+    <button id="chat-send" onclick="sendChat()">➤</button>
+  </div>
+</div>
+
+<script>
+const SYSTEM_PROMPT = `You are a friendly, helpful assistant for the Thembisa Trading Hub — a biscuit manufacturing operations system used by Crunch 'n Munch Biscuit Co. in Cape Town, South Africa.
+
+Your job is to help factory staff (packers, supervisors, drivers, sales staff) understand how to use the software. Always give clear, practical, step-by-step answers. Use simple language — not all staff are technical.
+
+Key facts about the system:
+- Built on Base44 platform
+- URL: https://tembisa-hub.base44.app
+- Products: 7 biscuit flavours — Shortbread, Ginger, Choc Chip, Coconut, Crunchie, Choc Crunch, and Assorted/Mix
+- 51 pack types across Boxes, Packets, Buckets, and Tubes
+
+Key workflows:
+- Raw materials arrive → Record Supplier Receipt (with lot numbers and quality checklist) → stock updates automatically
+- Production: New Production batch → select product, batches, supervisor, ingredient lots → Save → stock appears on Stock on Floor
+- Sales Orders: Import Pastel PDF (fastest) OR Phone Order OR New Sales Order. Each order line is Standard (cascading Flavour→Category→Pack Type dropdowns) or Custom (manual entry)
+- Packing Queue: Download Packing Schedule PDF → physically pack → complete paper form → scan with Epson in Searchable PDF/OCR mode → upload scan → system auto-reads and completes the packing record
+- Delivery: Retail orders go to Delivery Schedule. Shop orders show "Ready for Collection" — matched via customer phone number
+- HACCP: Upload completed HACCP document once per day via Dashboard — links to all orders packed that day
+- Final Packing Report: Full traceability document — searchable by baking batch, packing batch, supplier batch, customer, or invoice number
+
+Important rules:
+- FIFO always — oldest stock packed first, enforced by system
+- Assorted/Mix is never baked separately — system distributes across 5 flavours automatically (Shortbread, Ginger, Choc Chip, Coconut, Crunchie)
+- Batch number format: ddmmyy-shift (auto-generated)
+- White Bread Flour is zero-rated (no VAT)
+- Shop orders have no invoice number — phone number is the matching key
+- Partial packing: orders show "In Packing" status when started — prevents double-scheduling
+- Pre-packed stock: floor-packed stock not linked to an order, allocated FIFO when packing schedule is created
+- Scanner must be in Searchable PDF/OCR mode for scan-back to work — standard image scan will not be read
+- HACCP upload done once at day-end from Dashboard — not from Packing Queue
+
+Staff names: Nico Oosthuizen (QA/Admin), Chris (co-owner), Bernie/Denise/Caroline (packing supervisors), Jonathan/Clemmy (baking supervisors), Jo-Ann De Klerk (shift supervisor)
+
+If you don't know something specific about this system, say so honestly and suggest they ask their manager or admin.`;
+
+let chatHistory = [];
+let chatOpen = false;
+
+function toggleChat() {
+  chatOpen = !chatOpen;
+  document.getElementById('chat-panel').classList.toggle('open', chatOpen);
+  if (chatOpen) document.getElementById('chat-input').focus();
+}
+
+async function sendChat() {
+  const input = document.getElementById('chat-input');
+  const msg = input.value.trim();
+  if (!msg) return;
+
+  addMsg(msg, 'user');
+  input.value = '';
+  document.getElementById('chat-send').disabled = true;
+
+  chatHistory.push({ role: 'user', content: msg });
+
+  const typing = addMsg('Typing…', 'bot typing');
+
+  try {
+    const res = await fetch('https://thembisa-chatbot.larosmike10.workers.dev/', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        model: 'claude-sonnet-4-6',
+        max_tokens: 1000,
+        system: SYSTEM_PROMPT,
+        messages: chatHistory
+      })
+    });
+    const data = await res.json();
+    const reply = data.content?.[0]?.text || 'Sorry, I could not get a response. Please try again.';
+    chatHistory.push({ role: 'assistant', content: reply });
+    typing.textContent = reply;
+    typing.classList.remove('typing');
+  } catch(e) {
+    typing.textContent = 'Connection error — please check your internet and try again.';
+    typing.classList.remove('typing');
+  }
+
+  document.getElementById('chat-send').disabled = false;
+  document.getElementById('chat-messages').scrollTop = 99999;
+  input.focus();
+}
+
+function addMsg(text, cls) {
+  const el = document.createElement('div');
+  el.className = 'chat-msg ' + cls;
+  el.textContent = text;
+  const msgs = document.getElementById('chat-messages');
+  msgs.appendChild(el);
+  msgs.scrollTop = 99999;
+  return el;
+}
+</script>
+
 </body>
 </html>
